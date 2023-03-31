@@ -4,9 +4,11 @@ import HomeLayout from '@/layouts/HomeLayout';
 import Image from 'next/image';
 import Link from 'next/link';
 import categories from '../../json/categories.json';
+import {Explorer} from '../explorer';
 export default function Catalog() {
   return (
     <HomeLayout>
+      <Explorer />
       <div>
         <h4 className="mt-5 pb-6">
           Choose a category to browse Conway product for that machine
