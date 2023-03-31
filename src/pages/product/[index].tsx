@@ -1,8 +1,12 @@
 /* eslint-disable prettier/prettier */
+import ProductCard from '@/components/ProductCard';
 import HomeLayout from '@/layouts/HomeLayout';
 import {Tab} from '@headlessui/react';
 import {ChevronRightIcon} from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import {Splide, SplideSlide} from '@splidejs/react-splide';
+
+import '@splidejs/react-splide/css';
 
 export default function ProductPage() {
   return (
@@ -58,14 +62,64 @@ export default function ProductPage() {
         </div>
         <Tab.Group>
           <Tab.List className="flex border-b border-[#BDBDBD]">
-            <Tab className="border border-r-0 border-b-0 border-[#BDBDBD] rounded-tl text-center w-72 py-4">
-              <span>Related Products</span>
+            <Tab>
+              {({selected}) => (
+                <div
+                  className={`inline-block border border-r-transparent border-b-transaparent border-[#BDBDBD] rounded-tl text-center w-72 py-4 hover:bg-yellow-700 hover:border-black hover:border ${
+                    selected &&
+                    'border bg-yellow-700 border-black border-r-black'
+                  }`}
+                >
+                  Related Products
+                </div>
+              )}
             </Tab>
-            <Tab className="border border-l-0 border-b-0 border-[#BDBDBD] rounded-tr text-center w-72 py-4">
-              <span>Documentation</span>
+            <Tab>
+              {({selected}) => (
+                <div
+                  className={`'inline-block border border-b-transaparent border-[#BDBDBD] rounded-tr text-center w-72 py-4 hover:bg-yellow-700 hover:border-black hover:border' ${
+                    selected && 'border bg-yellow-700 border-black'
+                  }`}
+                >
+                  Documentation
+                </div>
+              )}
             </Tab>
           </Tab.List>
-          <Tab.Panels className="mt-2"></Tab.Panels>
+          <Tab.Panels className="mt-2">
+            <Tab.Panel>
+              <Splide
+                options={{perPage: 4, perMove: 1, gap: '1rem'}}
+                className="mx-auto"
+              >
+                <SplideSlide>
+                  <ProductCard />
+                </SplideSlide>
+                <SplideSlide>
+                  <ProductCard />
+                </SplideSlide>
+                <SplideSlide>
+                  <ProductCard />
+                </SplideSlide>
+                <SplideSlide>
+                  <ProductCard />
+                </SplideSlide>
+              </Splide>
+            </Tab.Panel>
+            <Tab.Panel>
+              <div className="text-sm h-96 font-medium">
+                <p>
+                  To find out even more, download our specification document
+                  here:
+                </p>
+                <p>
+                  <b>General Literature</b>
+                  ...........................................................{' '}
+                  <button className="text-blue-700">Download PDF (2.0)</button>
+                </p>
+              </div>
+            </Tab.Panel>
+          </Tab.Panels>
         </Tab.Group>
       </div>
     </HomeLayout>
