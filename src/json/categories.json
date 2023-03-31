@@ -1,0 +1,97 @@
+[
+  {
+    "name": "Bobst",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "bobst"
+  },
+  {
+    "name": "Brausse",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "brausse"
+  },
+  {
+    "name": "Contech",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "nikko"
+  },
+  {
+    "name": "Eterna-Yawa-Klett",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "eterna-yawa-klett"
+  },
+  {
+    "name": "Gietz",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "gietz"
+  },
+  {
+    "name": "Heidelberg",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "heidelberg"
+  },
+  {
+    "name": "Iberica",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "plates"
+  },
+  {
+    "name": "Iijima",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "ijima"
+  },
+  {
+    "name": "KBA-Planeta",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "kba-planeta"
+  },
+  {
+    "name": "Nikko",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "plates"
+  },
+  {
+    "name": "Plates",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "bobst"
+  },
+  {
+    "name": "Roland",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "brausse"
+  },
+  {
+    "name": "SANWA",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "eterna-yawa-klett"
+  },
+  {
+    "name": "SBL",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "kba-planeta"
+  },
+  {
+    "name": "Solna",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "plates"
+  },
+  {
+    "name": "Stripping & Blanking",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "gietz"
+  },
+  {
+    "name": "Sugano",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "heidelberg"
+  },
+  {
+    "name": "Toggle Hooks",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "plates"
+  },
+  {
+    "name": "Tooling Bars",
+    "variants": [106, 120, 160, 700, 900, 1080, 1120, 1260, 1420],
+    "image": "ijima"
+  }
+]

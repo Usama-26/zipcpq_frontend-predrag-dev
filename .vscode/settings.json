@@ -1,0 +1,10 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "[typescriptreact]": {
+    "breadcrumbs.showArrays": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "dotenv.enableAutocloaking": false
+}
