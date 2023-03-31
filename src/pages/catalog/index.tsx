@@ -1,14 +1,16 @@
 /* eslint-disable prettier/prettier */
 // eslint-disable-next-line prettier/prettier
 import HomeLayout from '@/layouts/HomeLayout';
+import {Explorer} from '@/modules/explorer';
 import Image from 'next/image';
 import Link from 'next/link';
 import categories from './../../json/categories.json';
 export default function Catalog() {
   return (
     <HomeLayout>
-      <div>
-        <h4 className="mt-7 pb-6">
+      <Explorer />
+      <div className="w-full">
+        <h4 className=" pb-6">
           Choose a category to browse Conway product for that machine
         </h4>
         <div className="h-[740px] overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">

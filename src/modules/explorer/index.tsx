@@ -34,9 +34,7 @@ export function Explorer() {
                           <span>{category.name}</span>
                         </Link>
                         <Disclosure.Button
-                          className={`p-2 ${
-                            open && 'border-l border-zinc-700/50'
-                          }`}
+                          className={'p-2 border-l border-zinc-700/50'}
                         >
                           <ChevronRightIcon
                             className={`w-4 ${open ? 'rotate-90' : 'rotate-0'}`}

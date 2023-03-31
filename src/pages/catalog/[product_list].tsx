@@ -24,9 +24,9 @@ export default function ProductList() {
   return (
     <HomeLayout>
       <Explorer />
-      <div className="mx-2">
-        <div className="flex justify-between items-center relative">
-          <h4 className="mt-6 pb-6 font-medium">{name}</h4>
+      <div className="mx-2 self-start">
+        <div className="flex justify-between items-center pb-4 relative">
+          <h4 className="self-center font-medium">{name}</h4>
           <div className="mt-5"></div>
           <Popover>
             {({open}) => (
