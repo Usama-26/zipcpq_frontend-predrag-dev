@@ -5,7 +5,7 @@ export default function CategoryCard() {
   return (
     <div className="flex flex-col gap-y-1">
       <div className=" transition-transform duration-100 hover:bg-[#EEEAEA] p-2 rounded-md ">
-        <div className="w-full flex justify-between items-center rounded-md py-5 px-4 pr-0 font-bitter text-black border bg-white cursor-pointer hover:-translate-y-0.5 ">
+        <div className="w-full flex justify-between items-center rounded-md py-5 px-4 pr-0 font-poppins text-black border bg-white cursor-pointer hover:-translate-y-0.5 ">
           <div className="basis-3/5">
             <h1 className="text-2xl font-bold">
               Conway Gripper Bar Complete for Bobst SP 900

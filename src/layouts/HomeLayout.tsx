@@ -128,9 +128,9 @@ export default function HomeLayout({children}: any) {
       </header>
       <div className="yellow-stripe bg-yellow-700 h-16"></div>
 
-      <main className="relative py-5 mx-24 text-zinc-700">
+      <main className="container mx-auto relative 2xl:px-20 py-5 text-zinc-700">
         {/* Breadcrumb */}
-        <div className="text-sm breadcrumbs">
+        <div className=" text-sm breadcrumbs">
           <ul>
             <li>
               <Link href={'/catalog'}>Product Catalog</Link>
@@ -147,7 +147,7 @@ export default function HomeLayout({children}: any) {
                 </li> */}
           </ul>
         </div>
-        <div className="container flex justify-between gap-10 mx-auto pb-5">
+        <div className="flex justify-between gap-10 mx-auto pb-5">
           {children}
         </div>
       </main>
