@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import CategoryCard from '@/components/CategoryCard';
+
+import ProductCardExtended from '@/components/ProductCardExtended';
 import HomeLayout from '@/layouts/HomeLayout';
 import {Explorer} from '@/modules/explorer';
 import {Dialog, Popover, Transition} from '@headlessui/react';
@@ -25,7 +26,7 @@ export default function ProductList() {
     <HomeLayout>
       <Explorer />
       <div className="mx-2 self-start">
-        <div className="flex justify-between items-center pb-4 relative">
+        <div className="flex justify-between items-center mx-2 pb-4 relative">
           <h4 className="self-center font-medium">{name}</h4>
           <div className="mt-5"></div>
           <Popover>
@@ -80,14 +81,17 @@ export default function ProductList() {
             )}
           </Popover>
         </div>
-        <p className="mb-4">
+        <p className="mb-4 mx-2">
           {
             "Conway produces high quality gripper bars and related products that are interchangeable with the original manufacturer's product but at better price."
           }
         </p>
         <div className="h-[720px] overflow-y-scroll ">
           <Link href="/product/product_id">
-            <CategoryCard />
+            <ProductCardExtended />
+            <ProductCardExtended />
+            <ProductCardExtended />
+            <ProductCardExtended />
           </Link>
         </div>
       </div>

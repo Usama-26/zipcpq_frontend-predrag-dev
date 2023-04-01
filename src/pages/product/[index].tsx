@@ -17,14 +17,15 @@ export default function ProductPage() {
     <HomeLayout>
       <div className="text-black font-poppins mt-4">
         <div className="flex items-center ">
-          <div className="w-7/12">
-            <div className="flex">
-              <h1 className="font-bold text-xl mr-4">
-                <span>Conway Gripper Bar Complete for Bobst SP 900</span>
+          <div className="w-7/12 mr-8">
+            <div className="flex justify-between">
+              <h1 className="font-bold text-2xl">
+                Conway Gripper Bar Complete for Bobst SP 900
               </h1>
+
               <button
                 onClick={() => setToggleProductDetails(!toggleProductDetails)}
-                className="inline-flex items-center gap-2 uppercase  px-5 py-1.5 bg-[#5B5B5B] rounded font-bold border-l border-transparent hover:border-black hover:bg-yellow-700 text-white marker:transition duration-200 text-base"
+                className="flex self-start items-center gap-2 uppercase  px-5 py-1.5 bg-[#5B5B5B] rounded font-bold border-l border-transparent hover:border-black hover:bg-yellow-700 text-white marker:transition duration-200"
               >
                 <span>
                   {toggleProductDetails ? 'Product Details' : 'Get Quote'}
@@ -33,8 +34,8 @@ export default function ProductPage() {
               </button>
             </div>
             {toggleProductDetails ? (
-              <div className="h-[480px] my-8 pr-8">
-                <div className="overflow-x-auto w-full">
+              <div className="h-[480px] my-8">
+                <div className="overflow-x-auto mr-10">
                   <table className="table w-full text-sm">
                     {/* head */}
                     <thead>
@@ -130,6 +131,12 @@ export default function ProductPage() {
                       </tr>
                     </tfoot>
                   </table>
+                  <button
+                    disabled
+                    className="float-right  ms-center gap-2 uppercase my-2 px-5 py-1.5 disabled:bg-[#BDBDBD] rounded font-bold bg-[#5B5B5B] text-white marker:transition duration-200 text-base"
+                  >
+                    <span>Add to RFQ</span>
+                  </button>
                 </div>
               </div>
             ) : (
