@@ -8,34 +8,39 @@ import {Splide, SplideSlide} from '@splidejs/react-splide';
 
 import '@splidejs/react-splide/css';
 import {useState} from 'react';
+import {Button} from '@/components/Button';
 
 export default function ProductPage() {
   const [toggleProductDetails, setToggleProductDetails] = useState(true);
-  console.log(toggleProductDetails);
+  const [active2d, setActive2d] = useState(true);
+  const [active3d, setActive3d] = useState(false);
 
+  const setActive = () => {
+    setActive2d(!active2d);
+    setActive3d(!active3d);
+  };
   return (
     <HomeLayout>
-      <div className="text-black font-poppins mt-4">
-        <div className="flex items-center ">
-          <div className="w-7/12 mr-8">
-            <div className="flex justify-between">
-              <h1 className="font-bold text-2xl">
-                Conway Gripper Bar Complete for Bobst SP 900
+      <section className="text-black font-poppins mt-4">
+        <div className="flex items-center">
+          <div className="w-7/12 h-[540px] mr-8">
+            <div className="flex items-start justify-between">
+              <h1 className="font-bold text-xl">
+                <span>Conway Gripper Bar Complete for Bobst SP 900</span>
               </h1>
-
-              <button
+              <Button
                 onClick={() => setToggleProductDetails(!toggleProductDetails)}
-                className="flex self-start items-center gap-2 uppercase  px-5 py-1.5 bg-[#5B5B5B] rounded font-bold border-l border-transparent hover:border-black hover:bg-yellow-700 text-white marker:transition duration-200"
+                className="rounded-md gap-2 hover:!bg-yellow-700 hover:!text-black hover:!border-l-black border-l border-transparent uppercase !bg-[#5B5B5B]"
               >
                 <span>
                   {toggleProductDetails ? 'Product Details' : 'Get Quote'}
                 </span>
-                <ChevronRightIcon className="h-3 stroke-2 stroke-white" />
-              </button>
+                <ChevronRightIcon className="h-3 stroke-2" />
+              </Button>
             </div>
             {toggleProductDetails ? (
-              <div className="h-[480px] my-8">
-                <div className="overflow-x-auto mr-10">
+              <div className=" my-8">
+                <div className="overflow-x-auto w-full">
                   <table className="table w-full text-sm">
                     {/* head */}
                     <thead>
@@ -119,7 +124,7 @@ export default function ProductPage() {
                     {/* foot */}
                     <tfoot className="rounded-none">
                       <tr>
-                        <th className="p-2">
+                        <th className="p-2 text-center">
                           <input type="checkbox" className="checkbox" />
                         </th>
                         <th className="p-2">Select all items</th>
@@ -131,16 +136,16 @@ export default function ProductPage() {
                       </tr>
                     </tfoot>
                   </table>
-                  <button
-                    disabled
-                    className="float-right  ms-center gap-2 uppercase my-2 px-5 py-1.5 disabled:bg-[#BDBDBD] rounded font-bold bg-[#5B5B5B] text-white marker:transition duration-200 text-base"
-                  >
-                    <span>Add to RFQ</span>
-                  </button>
                 </div>
+                <Button
+                  disabled
+                  className="rounded-md gap-2 hover:!bg-yellow-700 hover:!text-black hover:!border-l-black border-l border-transparent float-right uppercase mt-4 h-8 !py-1 !text-sm !bg-[#5B5B5B] disabled:bg-[#bdbdbd]"
+                >
+                  <span>Add to RFQ</span>
+                </Button>
               </div>
             ) : (
-              <div className="h-[480px]">
+              <div>
                 <div className="my-8 font-bold">
                   <span>CMI # 10-351-0-00-00</span>
                   <br />
@@ -166,21 +171,84 @@ export default function ProductPage() {
 
                 <p className="text-lg">
                   <span className="mr-4">Looking for a specific part ?</span>
-                  <button className="inline-flex items-center gap-2 px-6 py-1 bg-[#5B5B5B] rounded font-medium border-l border-b border-transparent hover:border-black hover:bg-yellow-700 text-white transition duration-200 text-sm">
+                  <Button className="rounded-md gap-2 hover:!bg-yellow-700 hover:!text-black hover:!border-l-black border-l border-transparent !font-normal h-8 !py-1 !text-sm !bg-[#5B5B5B]">
                     <span>Find it here</span>
-                  </button>
+                  </Button>
                 </p>
               </div>
             )}
           </div>
-          <div className="w-5/12 bg-gray-100 self-start">
-            <Image
-              src="/images/products/gripper-bar.png"
-              alt="Product Image"
-              width={513}
-              height={495}
-              className="mx-auto"
-            />
+          <div className="w-5/12 relative border border-[#5b5b5b] self-start">
+            <div className="p-4">
+              <Image
+                src="/images/products/gripper-bar.png"
+                alt="Product Image"
+                width={513}
+                height={495}
+                className="mx-auto w-80 h-80 object-cover"
+              />
+            </div>
+            <div className="absolute right-2 top-10 inline-flex flex-col gap-2">
+              <button>
+                <Image
+                  src="/static/imgs/full-screen--v2.png"
+                  alt="Product Image"
+                  width={500}
+                  height={500}
+                  className="mx-auto w-7 h-7 object-cover"
+                />
+              </button>
+              <button
+                onClick={setActive}
+                className={` w-7 h-7  ${
+                  active3d
+                    ? 'bg-yellow-700 hover:bg-yellow-700 text-black'
+                    : 'text-white  hover:bg-zinc-900 bg-[#5b5b5b]'
+                }`}
+              >
+                3D
+              </button>
+              <button
+                onClick={setActive}
+                className={` w-7 h-7  ${
+                  active2d
+                    ? 'bg-yellow-700 hover:bg-yellow-700 text-black'
+                    : 'text-white hover:bg-zinc-900 bg-[#5b5b5b]'
+                }`}
+              >
+                2D
+              </button>
+            </div>
+            <div className=" p-4 translate-y-16 flex justify-center">
+              <Image
+                src="/static/imgs/move.png"
+                alt="Product Image"
+                width={90}
+                height={120}
+                className=" w-16 h-20 object-cover bg-white"
+              />
+              <Image
+                src="/static/imgs/rotate.png"
+                alt="Product Image"
+                width={90}
+                height={120}
+                className=" w-16 h-20 object-cover bg-white"
+              />
+              <Image
+                src="/static/imgs/zoom.png"
+                alt="Product Image"
+                width={90}
+                height={120}
+                className=" w-16 h-20 object-cover bg-white"
+              />
+              <Image
+                src="/static/imgs/select-part.png"
+                alt="Product Image"
+                width={90}
+                height={120}
+                className=" w-16 h-20 object-cover bg-white"
+              />
+            </div>
           </div>
         </div>
         <Tab.Group>
@@ -188,9 +256,10 @@ export default function ProductPage() {
             <Tab>
               {({selected}) => (
                 <div
-                  className={`inline-block border border-r-transparent border-b-transaparent border-[#BDBDBD] rounded-tl text-center w-72 py-4 hover:bg-yellow-700 hover:border-black hover:border ${
-                    selected &&
-                    'border bg-yellow-700 border-black border-r-black'
+                  className={`inline-block border  border-b-transaparent border-[#BDBDBD] rounded-tl text-center w-72 py-4 hover:bg-yellow-700 hover:border ${
+                    selected
+                      ? 'border border-black border-r-black'
+                      : 'border-r-transparent'
                   }`}
                 >
                   Related Products
@@ -200,8 +269,8 @@ export default function ProductPage() {
             <Tab>
               {({selected}) => (
                 <div
-                  className={`'inline-block border border-b-transaparent border-[#BDBDBD] rounded-tr text-center w-72 py-4 hover:bg-yellow-700 hover:border-black hover:border' ${
-                    selected && 'border bg-yellow-700 border-black'
+                  className={`'inline-block border border-b-transaparent border-[#BDBDBD] rounded-tr text-center w-72 py-4 hover:bg-yellow-700 hover:border' ${
+                    selected && 'border border-black'
                   }`}
                 >
                   Documentation
@@ -244,7 +313,7 @@ export default function ProductPage() {
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
-      </div>
+      </section>
     </HomeLayout>
   );
 }

@@ -147,7 +147,7 @@ export default function HomeLayout({children}: any) {
                 </li> */}
           </ul>
         </div>
-        <div className="flex  gap-4 mx-auto pb-5">{children}</div>
+        {children}
       </main>
     </div>
   );

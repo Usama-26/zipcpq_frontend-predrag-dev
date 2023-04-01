@@ -10,7 +10,7 @@ export function Explorer() {
       <div className="mb-6">
         <h5 className="text-2xl">Product Catalog</h5>
       </div>
-      <div className="categories border p-3 border-[#c0c0c0] rounded-md">
+      <div className="categories h-screen border p-3 border-[#c0c0c0] rounded-md overflow-auto">
         <ul className="text-black">
           {categories.map((category, index) => {
             return (
