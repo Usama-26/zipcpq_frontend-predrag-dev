@@ -22,9 +22,9 @@ export default function ProductPage() {
   return (
     <HomeLayout>
       <section className="text-black font-poppins mt-4">
-        <div className="flex items-center">
-          <div className="w-7/12 h-[540px] mr-8">
-            <div className="flex items-start justify-between">
+        <div className="flex lg:flex-nowrap flex-wrap mb-10 items-center">
+          <div className="lg:w-7/12 w-full mx-auto lg:order-1 order-2 mb-4 mr-8">
+            <div className="flex lg:flex-nowrap flex-wrap items-start justify-between">
               <h1 className="font-bold text-xl">
                 <span>Conway Gripper Bar Complete for Bobst SP 900</span>
               </h1>
@@ -178,7 +178,7 @@ export default function ProductPage() {
               </div>
             )}
           </div>
-          <div className="w-5/12 relative self-start">
+          <div className="lg:w-5/12 mx-auto order-1 lg:order-2 w-full mb-12 relative self-start">
             {showProductDetails ? (
               <div className="border border-[#5b5b5b] ">
                 <div className="p-4">
@@ -254,25 +254,17 @@ export default function ProductPage() {
               </div>
             ) : (
               <div className="">
-                <Splide options={{direction: 'ttb', height: 400}}>
-                  <SplideSlide>
-                    <Image
-                      src="/images/products/gripper-bar.png"
-                      alt="Product Image"
-                      width={513}
-                      height={495}
-                      className="mx-auto w-80 h-80 object-cover"
-                    />
-                  </SplideSlide>
-                  <SplideSlide>
-                    <Image
-                      src="/images/products/bobst-large.png"
-                      alt="Product Image"
-                      width={513}
-                      height={495}
-                      className="mx-auto w-80 h-80 object-cover"
-                    />
-                  </SplideSlide>
+                <Splide
+                  options={{
+                    height: 400,
+                    mediaQuery: 'min',
+                    breakpoints: {
+                      768: {
+                        direction: 'ttb',
+                      },
+                    },
+                  }}
+                >
                   <SplideSlide>
                     <Image
                       src="/images/products/gripper-bar.png"
@@ -288,11 +280,11 @@ export default function ProductPage() {
           </div>
         </div>
         <Tab.Group>
-          <Tab.List className="flex border-b border-[#BDBDBD]">
+          <Tab.List className="flex lg:justify-start  mt-10">
             <Tab>
               {({selected}) => (
                 <div
-                  className={`inline-block border  border-b-transaparent border-[#BDBDBD] rounded-tl text-center w-72 py-4 hover:bg-yellow-700 hover:border ${
+                  className={` border bg-white border-b-transaparent border-[#BDBDBD] rounded-tl text-center w-72 py-4 hover:bg-yellow-700 hover:border ${
                     selected
                       ? 'border border-black border-r-black'
                       : 'border-r-transparent'
@@ -305,7 +297,7 @@ export default function ProductPage() {
             <Tab>
               {({selected}) => (
                 <div
-                  className={`'inline-block border border-b-transaparent border-[#BDBDBD] rounded-tr text-center w-72 py-4 hover:bg-yellow-700 hover:border' ${
+                  className={` border border-b-transaparent border-[#BDBDBD] rounded-tr text-center w-72   py-4 hover:bg-yellow-700 hover:border' ${
                     selected && 'border border-black'
                   }`}
                 >

@@ -6,7 +6,7 @@ import React from 'react';
 import categories from './../../json/categories.json';
 export function Explorer() {
   return (
-    <aside className="max-w-xs min-w-[256px]">
+    <aside className="max-w-xs min-w-max">
       <div className="mb-6">
         <h5 className="text-2xl">Product Catalog</h5>
       </div>

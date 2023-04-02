@@ -7,14 +7,15 @@ import React, {Fragment, useState} from 'react';
 import {ChevronRightIcon} from '@heroicons/react/24/outline';
 import {useRouter} from 'next/router';
 import {Explorer} from '@/modules/explorer';
+import {RHFTextField} from '@/components/HookForm';
 export default function HomeLayout({children}: any) {
   const router = useRouter();
   const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
 
   return (
     <div className="font-poppins">
-      <header className="mx-10 py-5 text-zinc-700">
-        <div className="flex mx-auto container justify-between items-center">
+      <header className="relative sm:mx-10 mx-5 py-5 text-zinc-700">
+        <div className=" flex mx-auto container justify-between items-center">
           <div>
             <Link href={'/'}>
               <Image
@@ -33,8 +34,8 @@ export default function HomeLayout({children}: any) {
                   id="search"
                   type="text"
                   placeholder="Search"
-                  className={`bg-white shadow rounded-full py-2 border px-4 focus:outline-none focus:border transition-all translate-x-10 -z-10 text-sm ${
-                    isSearchBarVisible ? 'w-64 visible' : 'w-0 invisible'
+                  className={`bg-white shadow rounded-full py-2 border px-4 focus:outline-none focus:border transition-all translate-x-10 sm:-z-10 sm:w-64 text-sm sm:inline-block hidden ${
+                    isSearchBarVisible ? ' visible' : 'w-0 invisible'
                   }`}
                 />
               </label>
@@ -49,7 +50,7 @@ export default function HomeLayout({children}: any) {
                   alt={'Search Icon'}
                 />
               </button>
-              <button className="relative">
+              <button className="relative py-2">
                 <span className="absolute top-0 -right-2.5 px-1 bg-red-400 rounded-sm text-white font-medium text-[10px]">
                   3
                 </span>
@@ -71,7 +72,7 @@ export default function HomeLayout({children}: any) {
                       width={15}
                       alt={'Profile Icon'}
                     />
-                    <span className="hidden sm:inline">Hello, Emma!</span>
+                    <span className="hidden md:inline">Hello, Emma!</span>
                     <Image
                       src={'/icons/chevron.svg'}
                       height={6}
@@ -128,7 +129,7 @@ export default function HomeLayout({children}: any) {
       </header>
       <div className="yellow-stripe bg-yellow-700 h-16"></div>
 
-      <main className="container mx-auto relative 2xl:px-20 py-5 text-zinc-700">
+      <main className="container mx-auto relative  py-5 text-zinc-700">
         {/* Breadcrumb */}
         <div className=" text-sm breadcrumbs">
           <ul>
