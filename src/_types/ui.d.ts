@@ -12,3 +12,9 @@ export type TColorTypes = {
   warning?: string;
   success?: string;
 };
+
+export type TBreadCrumb = {
+  title: string;
+  url: string;
+  active?: boolean;
+};

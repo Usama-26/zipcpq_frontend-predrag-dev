@@ -52,7 +52,7 @@ const findFirst = async () => {
 };
 
 const find = async ({where}: {where: string | null}) => {
-  const withJoins = ['fields', 'field_types'];
+  const withJoins = ['field', 'ft'];
   const fields = getSelectFieldsString(tableName, {
     cols: columns,
     joins,

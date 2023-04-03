@@ -1,18 +1,28 @@
-/* eslint-disable prettier/prettier */
-import {Disclosure} from '@headlessui/react';
+import {Disclosure, Menu, Transition} from '@headlessui/react';
 import {ChevronRightIcon} from '@heroicons/react/24/outline';
+import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
-import categories from './../../json/categories.json';
-export function Explorer() {
+import {useRouter} from 'next/router';
+import {TCategory} from '_types/types';
+import {TBreadCrumb} from '_types/ui';
+import {Suspense} from 'react';
+
+interface ISidebarProps {
+  sidebarCategories: TCategory[];
+  breadcrumb?: TBreadCrumb[];
+}
+
+const Sidebar = ({sidebarCategories, breadcrumb}: ISidebarProps) => {
+  console.log(sidebarCategories);
+  const router = useRouter();
   return (
-    <aside className="max-w-xs min-w-max">
+    <aside className="max-w-sm min-w-max">
       <div className="mb-6">
         <h5 className="text-2xl">Product Catalog</h5>
       </div>
-      <div className="categories h-screen border p-3 border-[#c0c0c0] rounded-md overflow-auto">
+      <div className="categories border p-3 border-[#c0c0c0] rounded-md ">
         <ul className="text-black">
-          {categories.map((category, index) => {
+          {sidebarCategories.map((category, index) => {
             return (
               <li key={index}>
                 <Disclosure as="div">
@@ -24,11 +34,7 @@ export function Explorer() {
                         }`}
                       >
                         <Link
-                          href={{
-                            pathname: `/catalog/${category.name.toLowerCase()}`,
-                            query: category,
-                          }}
-                          as={`/catalog/${category.name.toLowerCase()}`}
+                          href={`/catalog/${category.slug}`}
                           className={'w-full p-2'}
                         >
                           <span>{category.name}</span>
@@ -42,19 +48,21 @@ export function Explorer() {
                         </Disclosure.Button>
                       </div>
                       <Disclosure.Panel className=" px-2 py-2 text-sm bg-gray-50">
-                        <ul className="category-variants-list">
-                          {category.variants.map(variant => {
+                        <ul className="category-variants-list overflow-y-auto max-h-56">
+                          {category?.children?.map(variant => {
                             return (
-                              <li key={variant}>
-                                <button
-                                  value={variant}
-                                  className="category-variant-btn py-1 inline-flex items-center hover:font-bold"
-                                >
-                                  <ChevronRightIcon
-                                    className={'chevron w-3 mr-1 invisible'}
-                                  />
-                                  <span>{variant}</span>
-                                </button>
+                              <li key={variant.id}>
+                                <Link href={`/catalog/${variant.slug}`}>
+                                  <button
+                                    value={variant.name}
+                                    className="category-variant-btn py-1 inline-flex items-center hover:font-bold"
+                                  >
+                                    <ChevronRightIcon
+                                      className={'chevron w-3 mr-1 invisible'}
+                                    />
+                                    <span>{variant.name}</span>
+                                  </button>
+                                </Link>
                               </li>
                             );
                           })}
@@ -70,4 +78,6 @@ export function Explorer() {
       </div>
     </aside>
   );
-}
+};
+
+export default Sidebar;

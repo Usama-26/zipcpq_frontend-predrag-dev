@@ -1,39 +1,46 @@
 import {GetServerSideProps, InferGetServerSidePropsType} from 'next';
-
 import {setLicenseDB} from '../server/db';
-import productModel from 'server/models/productModel';
 import categoryModel from 'server/models/categoryModel';
 import dynamic from 'next/dynamic';
-import EmptyLayout from '@/layouts/EmptyLayout';
+import {TBreadCrumb} from '_types/ui';
 const Catalog = dynamic(() => import('@/modules/catalog'), {});
+const HomeLayout = dynamic(() => import('@/layouts/HomeLayout'), {});
 
 // export default function Home({ styleUrl, fields }: { styleUrl: string, fields: any }) {
-export default function Home() {
-  //   {
-  //   products,
-  //   categories,
-  // }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  //   console.log(products, categories);
+export default function Home({
+  categories,
+  sidebarCategories,
+  breadcrumb,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <EmptyLayout>
-      <Catalog />
-    </EmptyLayout>
+    <HomeLayout
+      sidebarCategories={sidebarCategories}
+      breadcrumb={breadcrumb}
+      showSideBar={true}
+    >
+      <Catalog categories={categories} />
+    </HomeLayout>
   );
 }
 
-// export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
-//   if (!(await setLicenseDB(req.headers.host))) {
-//     return {
-//       notFound: true,
-//     };
-//   }
-//   const categories = await categoryModel.find({});
-//   // const products = await productModel.findBySlug('sdfsdfsdf');
-//   const products = await productModel.find({
-//     withJoins: ['users', 'product_types'],
-//   });
-//   // console.log(products);
-//   return {
-//     props: {products, categories},
-//   };
-// };
+export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
+  if (!(await setLicenseDB(req.headers.host))) {
+    return {
+      notFound: true,
+    };
+  }
+  const breadcrumb: TBreadCrumb[] = [
+    {
+      title: 'Product Catalog',
+      url: '/catalog',
+      active: true,
+    },
+  ];
+  return {
+    props: {
+      categories: await categoryModel.find({where: {parent_id: 1}}),
+      sidebarCategories: await categoryModel.getCategoriesHierarchy({}),
+      breadcrumb,
+    },
+  };
+};

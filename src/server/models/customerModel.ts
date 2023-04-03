@@ -12,6 +12,11 @@ import {BCRYPT_SALT_ROUND} from 'server/constant';
 import {sendMail} from 'server/mail';
 import customerPasswordResetModel from './customerPasswordResetModel';
 import moment from 'moment';
+import jwt from 'jsonwebtoken';
+import {render} from '@react-email/render';
+import VerificationEmail from 'server/templates/email/verification-email';
+import ResetPasswordEmail from 'server/templates/email/reset-password-email';
+import WelcomeEmail from 'server/templates/email/welcome-email';
 
 const tableName = 'customers';
 const columns = [
@@ -47,7 +52,7 @@ const findByCredentials = async ({
 }): Promise<TCustomer | null> => {
   const user = await baseFindFirst({
     licenseDb: true,
-    query: `select * from ${tableName} where email=?`,
+    query: `select * from ${tableName} where email=? AND email_verified_at IS NOT NULL`,
     values: [username],
   });
   if (user) {
@@ -71,23 +76,23 @@ const create = async ({data}: {data: {[key: string]: any}}) => {
   if (result) {
     createdData = await findFirst(`id=${result.insertId}`);
     console.log(createdData);
-    try {
-      const info = await sendMail({
-        to: createdData!.email, // list of receivers
-        subject: 'Conway machine Registration!', // Subject line
-        text: '', // plain text body
-        html: `Hello!
-          You're successfully registered with Conways machine.
-          Click <a href="${process.env.APP_URL}/auth/login"><button>here</button></a> for login
-        Regards,
-        zipCPQ eCommerce`, // html body
-      });
-      console.log('Message sent: %s', info.messageId);
-    } catch (error) {
-      console.log(error);
-    }
 
-    return true;
+    const token = jwt.sign(
+      {id: result.insertedId},
+      process.env.NEXTAUTH_SECRET + result.email,
+      {
+        expiresIn: '1d',
+      }
+    );
+    const validationLink = `${process.env.APP_URL}/auth/verify-email?token=${token}&email=${data.email}`;
+    const html = render(VerificationEmail({validationLink}));
+    const info = await sendMail({
+      to: data.email,
+      subject: 'Verify your registration for Conway Machine!',
+      text: '',
+      html,
+    });
+    console.log('Message sent: %s', info.messageId);
   }
   console.log('createdData', createdData);
   return true;
@@ -102,21 +107,17 @@ const forgotPassword = async (email: string): Promise<boolean> => {
   if (user) {
     // Hash an empty string with the salt to generate a random string
     const token = await customerPasswordResetModel.create(email);
+    const html = render(
+      ResetPasswordEmail({
+        resetPasswordLink: `${process.env.APP_URL}/reset-password?token=${token}`,
+      })
+    );
     if (token) {
       const info = await sendMail({
         to: email, // list of receivers
         subject: 'Reset Password Notification', // Subject line
         text: '', // plain text body
-        html: `Hello!
-        You are receiving this email because we received a password reset request for your account.
-        
-        <a href="${process.env.APP_URL}/auth/reset-password?token=${token.token}&email=${token.email}"><button>Reset Password</button></a>
-        This password reset link will expire in 60 minutes.
-        
-        If you did not request a password reset, no further action is required.
-        
-        Regards,
-        zipCPQ eCommerce`, // html body
+        html,
       });
       console.log('Message sent: %s', info.messageId);
       return true;
@@ -126,14 +127,56 @@ const forgotPassword = async (email: string): Promise<boolean> => {
   return false;
 };
 
+const verifyEmail = async (token: string, email: string): Promise<boolean> => {
+  const user = await customerModel.findFirst(`email='${email}'`);
+  console.log('userhhhh', user);
+  if (user.email_verified_at) {
+    return true;
+  }
+  console.log('userffff', user);
+  console.log('token', token);
+  if (!token) {
+    return false;
+  }
+
+  const isValid = await new Promise(resolve => {
+    jwt.verify(token as string, process.env.NEXTAUTH_SECRET! + email, err => {
+      if (err) resolve(false);
+      if (!err) resolve(true);
+    });
+  });
+  console.log('isValid', isValid);
+  if (!isValid) {
+    return false;
+  }
+
+  const result = await baseUpdateRecord({
+    licenseDb: true,
+    table: 'customers',
+    data: {email_verified_at: new Date().toISOString()},
+    where: `email='${email}'`,
+  });
+  console.log('verify updated', result);
+
+  const html = render(WelcomeEmail());
+  await sendMail({
+    to: email as string,
+    subject: 'Welcome to Conway Machine!',
+    html,
+    text: '',
+  });
+
+  return true;
+};
+
 const resetPassword = async (data: {
   [key: string]: any;
 }): Promise<boolean | string> => {
   const token = await customerPasswordResetModel.findFirst(
     `email='${data.email}' and token='${data.token}'`
   );
-  const diff = moment().diff(moment(token.created_at), 'minutes'); // 1
-  if (diff > (process.env.RESET_PW_EXPIRATION || 5)) {
+  const diff: number = moment().diff(moment(token.created_at), 'minutes'); // 1
+  if (diff > (Number(process.env.RESET_PW_EXPIRATION) || 5)) {
     return 'TOKEN_EXPIRED';
   }
 
@@ -169,6 +212,7 @@ const customerModel: TModel & {
   isMailExist: (email: string) => Promise<boolean>;
   resetPassword: (data: any) => Promise<boolean | string>;
   findByCredentials: ({}: any) => Promise<TCustomer | null>;
+  verifyEmail: (token: string, email: string) => Promise<boolean>;
 } = {
   tableName,
   columns,
@@ -178,6 +222,7 @@ const customerModel: TModel & {
   isMailExist,
   resetPassword,
   findByCredentials,
+  verifyEmail,
 };
 
 export default customerModel;

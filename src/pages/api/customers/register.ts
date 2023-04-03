@@ -8,9 +8,10 @@ async function handler(_req: NextApiRequest, res: NextApiResponse) {
   delete data.password_confirmation;
   const created = await customerModel.create({data});
   if (created)
-    return res
-      .status(201)
-      .json({message: 'Thank you, you will receive welcome email.'});
+    return res.status(201).json({
+      message:
+        'Thank you, you will receive welcome email. Please check spam also.',
+    });
   return res.status(400).json({});
 }
 

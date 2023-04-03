@@ -89,7 +89,7 @@ export type TToken = {
 
 export type TCategory = {
   id: number;
-  parent_id: string;
+  parent_id: number;
   lft: string;
   rgt: string;
   depth: string;
@@ -101,6 +101,8 @@ export type TCategory = {
   locked: string;
   created_at: string;
   updated_at: string;
+  slug: string;
+  children?: TCategory[];
 };
 
 export type TProduct = {

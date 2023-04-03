@@ -5,6 +5,7 @@ import {Session} from 'next-auth';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/style.css';
+import NextNProgress from 'nextjs-progressbar';
 
 export default function App({
   Component,
@@ -12,6 +13,7 @@ export default function App({
 }: AppProps<{session: Session}>) {
   return (
     <SessionProvider session={session}>
+      <NextNProgress />
       <Component {...pageProps} />
       <ToastContainer />
     </SessionProvider>

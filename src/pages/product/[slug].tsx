@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable prettier/prettier */
 import ProductCard from '@/components/ProductCard';
 import HomeLayout from '@/layouts/HomeLayout';
@@ -5,38 +6,61 @@ import {Tab} from '@headlessui/react';
 import {ChevronRightIcon} from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import {Splide, SplideSlide} from '@splidejs/react-splide';
+import dynamic from 'next/dynamic';
+import ImageGallery from '../../components/imageGallery';
 
 import '@splidejs/react-splide/css';
 import {useState} from 'react';
 import {Button} from '@/components/Button';
+import categoryModel from 'server/models/categoryModel';
+import {TBreadCrumb} from '_types/ui';
+import {setLicenseDB} from 'server/db';
+import {GetServerSideProps, InferGetServerSidePropsType} from 'next';
 
-export default function ProductPage() {
+export default function Index({
+  sidebarCategories,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [showProductDetails, setShowProductDetails] = useState(false);
   const [active2d, setActive2d] = useState(true);
   const [active3d, setActive3d] = useState(false);
+
+  const mainImage = '/images/products/gripper-bar.png';
+  const thumbnailImages = [
+    '/images/products/gear.png',
+    '/images/products/brush.png',
+    '/images/products/gietz.png',
+    '/images/products/plates.png',
+    '/images/products/gripper-bar.png',
+  ];
 
   const setActive = () => {
     setActive2d(!active2d);
     setActive3d(!active3d);
   };
   return (
-    <HomeLayout>
+    <HomeLayout
+      sidebarCategories={sidebarCategories}
+      breadcrumb={[]}
+      showSideBar={false}
+    >
       <section className="text-black font-poppins mt-4">
-        <div className="flex lg:flex-nowrap flex-wrap mb-10 items-center">
-          <div className="lg:w-7/12 w-full mx-auto lg:order-1 order-2 mb-4 mr-8">
-            <div className="flex lg:flex-nowrap flex-wrap items-start justify-between">
-              <h1 className="font-bold text-xl">
+        <div className="mb-10 items-center gap-4 grid lg:grid-cols-12 justify-center ">
+          <div className="lg:col-span-7 w-full  mb-4 ">
+            <div className="flex gap-5">
+              <h1 className="font-bold text-[30px] text-start">
                 <span>Conway Gripper Bar Complete for Bobst SP 900</span>
               </h1>
-              <Button
-                onClick={() => setShowProductDetails(!showProductDetails)}
-                className="rounded-md gap-2 hover:!bg-yellow-700 hover:!text-black hover:!border-l-black border-l border-transparent uppercase !bg-[#5B5B5B]"
-              >
-                <span>
-                  {showProductDetails ? 'Product Details' : 'Get Quote'}
-                </span>
-                <ChevronRightIcon className="h-3 stroke-2" />
-              </Button>
+              <div>
+                <Button
+                  onClick={() => setShowProductDetails(!showProductDetails)}
+                  className="rounded-md text-[14px] w-[170px] p-0 hover:!bg-yellow-700 hover:!text-black border-transparent focus:outline-none uppercase !bg-[#5B5B5B] focus:ring-0"
+                >
+                  <span>
+                    {showProductDetails ? 'PRODUCT DETAILS' : 'QUOTE NOW'}
+                  </span>
+                  <ChevronRightIcon className="h-3 stroke-2" />
+                </Button>
+              </div>
             </div>
             {showProductDetails ? (
               <div className=" my-8">
@@ -60,10 +84,138 @@ export default function ProductPage() {
                         <td className="p-2 text-center">
                           <input type="checkbox" className="checkbox" />
                         </td>
-                        <td className="p-2"></td>
                         <td className="p-2">1</td>
+                        <td className="p-2">2</td>
                         <td className="p-2">10-351-0-00-00</td>
                         <td className="p-2">Griper Bar Complete</td>
+                        <td className="p-2">BSA04120000FM</td>
+                        <td className="p-2">
+                          <span>
+                            <button>
+                              <Image
+                                src="/icons/eye-outlined.svg"
+                                width={512}
+                                height={512}
+                                alt="eye icon"
+                                className="w-6 h-6 mr-2"
+                              />
+                            </button>
+                            <button>
+                              <Image
+                                src="/icons/cart.svg"
+                                width={512}
+                                height={512}
+                                alt="cart icon"
+                                className="w-6 h-6"
+                              />
+                            </button>
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 text-center">
+                          <input type="checkbox" className="checkbox" />
+                        </td>
+                        <td className="p-2">1</td>
+                        <td className="p-2">1</td>
+                        <td className="p-2">10-351-0-01-01</td>
+                        <td className="p-2">Shell (Assembly)</td>
+                        <td className="p-2">BSA04120000FM</td>
+                        <td className="p-2">
+                          <span>
+                            <button>
+                              <Image
+                                src="/icons/eye-outlined.svg"
+                                width={512}
+                                height={512}
+                                alt="eye icon"
+                                className="w-6 h-6 mr-2"
+                              />
+                            </button>
+                            <button>
+                              <Image
+                                src="/icons/cart.svg"
+                                width={512}
+                                height={512}
+                                alt="cart icon"
+                                className="w-6 h-6"
+                              />
+                            </button>
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 text-center">
+                          <input type="checkbox" className="checkbox" />
+                        </td>
+                        <td className="p-2">1</td>
+                        <td className="p-2">1</td>
+                        <td className="p-2">10-351-0-01-01</td>
+                        <td className="p-2">Shell (Assembly)</td>
+                        <td className="p-2">BSA04120000FM</td>
+                        <td className="p-2">
+                          <span>
+                            <button>
+                              <Image
+                                src="/icons/eye-outlined.svg"
+                                width={512}
+                                height={512}
+                                alt="eye icon"
+                                className="w-6 h-6 mr-2"
+                              />
+                            </button>
+                            <button>
+                              <Image
+                                src="/icons/cart.svg"
+                                width={512}
+                                height={512}
+                                alt="cart icon"
+                                className="w-6 h-6"
+                              />
+                            </button>
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 text-center">
+                          <input type="checkbox" className="checkbox" />
+                        </td>
+                        <td className="p-2">1</td>
+                        <td className="p-2">1</td>
+                        <td className="p-2">10-351-0-01-01</td>
+                        <td className="p-2">Shell (Assembly)</td>
+                        <td className="p-2">BSA04120000FM</td>
+                        <td className="p-2">
+                          <span>
+                            <button>
+                              <Image
+                                src="/icons/eye-outlined.svg"
+                                width={512}
+                                height={512}
+                                alt="eye icon"
+                                className="w-6 h-6 mr-2"
+                              />
+                            </button>
+                            <button>
+                              <Image
+                                src="/icons/cart.svg"
+                                width={512}
+                                height={512}
+                                alt="cart icon"
+                                className="w-6 h-6"
+                              />
+                            </button>
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 text-center">
+                          <input type="checkbox" className="checkbox" />
+                        </td>
+                        <td className="p-2">1</td>
+                        <td className="p-2">1</td>
+                        <td className="p-2">10-351-0-01-01</td>
+                        <td className="p-2">Shell (Assembly)</td>
                         <td className="p-2">BSA04120000FM</td>
                         <td className="p-2">
                           <span>
@@ -178,7 +330,7 @@ export default function ProductPage() {
               </div>
             )}
           </div>
-          <div className="lg:w-5/12 mx-auto order-1 lg:order-2 w-full mb-12 relative self-start">
+          <div className="lg:col-span-5  w-full mb-12 relative self-start">
             {showProductDetails ? (
               <div className="border border-[#5b5b5b] ">
                 <div className="p-4">
@@ -254,33 +406,16 @@ export default function ProductPage() {
               </div>
             ) : (
               <div className="">
-                <Splide
-                  options={{
-                    height: 400,
-                    mediaQuery: 'min',
-                    breakpoints: {
-                      768: {
-                        direction: 'ttb',
-                      },
-                    },
-                  }}
-                >
-                  <SplideSlide>
-                    <Image
-                      src="/images/products/gripper-bar.png"
-                      alt="Product Image"
-                      width={513}
-                      height={495}
-                      className="mx-auto w-80 h-80 object-cover"
-                    />
-                  </SplideSlide>
-                </Splide>
+                <ImageGallery
+                  mainImage={mainImage}
+                  thumbnailImages={thumbnailImages}
+                />
               </div>
             )}
           </div>
         </div>
         <Tab.Group>
-          <Tab.List className="flex lg:justify-start  mt-10">
+          <Tab.List className="flex lg:justify-start  mt-10 mb-12">
             <Tab>
               {({selected}) => (
                 <div
@@ -306,32 +441,38 @@ export default function ProductPage() {
               )}
             </Tab>
           </Tab.List>
-          <Tab.Panels className="mt-2">
+          <Tab.Panels className="mt-2 mb-12">
             <Tab.Panel>
-              <Splide
-                options={{
-                  perPage: 4,
-                  perMove: 1,
-                  gap: '1rem',
-                }}
-                className="mx-auto"
-              >
-                <SplideSlide>
-                  <ProductCard />
-                </SplideSlide>
-                <SplideSlide>
-                  <ProductCard />
-                </SplideSlide>
-                <SplideSlide>
-                  <ProductCard />
-                </SplideSlide>
-                <SplideSlide>
-                  <ProductCard />
-                </SplideSlide>
-              </Splide>
+              <div id="mySplide">
+                <Splide
+                  options={{
+                    perPage: 4,
+                    perMove: 1,
+                    gap: '2rem',
+                    pagination: false,
+                  }}
+                  className="mx-auto"
+                >
+                  <SplideSlide>
+                    <ProductCard />
+                  </SplideSlide>
+                  <SplideSlide>
+                    <ProductCard />
+                  </SplideSlide>
+                  <SplideSlide>
+                    <ProductCard />
+                  </SplideSlide>
+                  <SplideSlide>
+                    <ProductCard />
+                  </SplideSlide>
+                  <SplideSlide>
+                    <ProductCard />
+                  </SplideSlide>
+                </Splide>
+              </div>
             </Tab.Panel>
             <Tab.Panel>
-              <div className="text-sm h-96 font-medium">
+              <div className="text-sm h-44 font-medium">
                 <p>
                   To find out even more, download our specification document
                   here:
@@ -342,6 +483,9 @@ export default function ProductPage() {
                   <button className="text-blue-700">Download PDF (2.0)</button>
                 </p>
               </div>
+              <div>
+                <img src="/images/logo.png" alt="" className="opacity-50" />
+              </div>
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
@@ -349,3 +493,25 @@ export default function ProductPage() {
     </HomeLayout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({query, req}) => {
+  const {slug} = query;
+  if (!(await setLicenseDB(req.headers.host))) {
+    return {
+      notFound: true,
+    };
+  }
+  const breadcrumb: TBreadCrumb[] = [
+    {
+      title: 'Product',
+      url: '/',
+    },
+  ];
+
+  return {
+    props: {
+      sidebarCategories: await categoryModel.getCategoriesHierarchy({}),
+      breadcrumb,
+    },
+  };
+};

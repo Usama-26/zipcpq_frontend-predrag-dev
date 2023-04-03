@@ -101,7 +101,7 @@ const findFirst = async () => {
 };
 
 const findBySlug = async (slug: string) => {
-  const withJoins = ['users', 'product_types'];
+  const withJoins = ['created', 'pt'];
   const fields = getSelectFieldsString(tableName, {
     cols: columns,
     joins,
@@ -109,13 +109,6 @@ const findBySlug = async (slug: string) => {
   });
   const joinsQuery = getJoinsString(joins, withJoins);
   let query = `select ${fields} from ${tableName} ${joinsQuery} limit 1`;
-  console.log(
-    await baseFindFirst<TProduct>({
-      licenseDb: true,
-      query: query,
-      values: [slug],
-    })
-  );
 
   return await baseFindFirst<TProduct>({
     licenseDb: true,
@@ -128,7 +121,7 @@ const find = async ({
   where,
   withJoins = [],
 }: {
-  where?: {category_ids?: number[]};
+  where?: {category_ids?: number[]; category_slugs?: string[]};
   withJoins?: string[];
 }): Promise<TProduct[] | any[]> => {
   const fields = getSelectFieldsString(tableName, {
@@ -137,16 +130,28 @@ const find = async ({
     withJoins,
   });
   const joinsQuery = getJoinsString(joins, withJoins);
-  let query = `select ${fields} from ${tableName} ${joinsQuery}`;
-
+  let whereCond: string[] = [];
   if (where) {
     if (where.category_ids) {
-      query += ` where id IN (SELECT product_id from product_categories_rel where category_id IN (${where.category_ids.join(
-        ','
-      )}) `;
+      whereCond.push(
+        `${tableName}.id IN (SELECT product_id from product_categories_rel where category_id IN (${where.category_ids.join(
+          ','
+        )})) `
+      );
+    }
+    if (where.category_slugs) {
+      whereCond.push(
+        `${tableName}.id IN (SELECT product_id from product_categories_rel where category_id IN (SELECT id from categories where slug IN ('${where.category_slugs.join(
+          ','
+        )}'))) `
+      );
     }
   }
-  console.log(query);
+
+  let query = `select ${fields} from ${tableName} ${joinsQuery} ${
+    whereCond.length > 0 ? 'where ' + whereCond.join(' AND ') : ''
+  }`;
+
   return await baseFind<TProduct[] | []>({
     licenseDb: true,
     query: query,
@@ -161,7 +166,7 @@ const productModel: TModel & {
     where,
     withJoins = [],
   }: {
-    where?: {category_ids?: number[]};
+    where?: {category_ids?: number[]; category_slugs?: string[]};
     withJoins?: string[];
   }) => Promise<TProduct[] | []>;
 } = {

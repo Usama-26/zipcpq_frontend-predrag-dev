@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function ProductCard() {
   return (
-    <div className=" rounded-md border border-[#C0C0C0] max-w-xs  ">
+    <div className=" rounded-md border border-[#C0C0C0] mx-auto  ">
       <div className="p-4">
         <Image
           src="/images/products/gear.png"

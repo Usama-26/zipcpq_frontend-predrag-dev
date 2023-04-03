@@ -1,6 +1,5 @@
 import {IncomingMessage} from 'http';
 import moment from 'moment';
-// import mysql from 'serverless-mysql';
 import mysql from 'mysql2/promise';
 
 import licenseModel from './models/licenseModel';
@@ -18,7 +17,6 @@ const defaultConfig = {
   idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000
   queueLimit: 0,
 };
-
 const db = mysql.createPool({
   ...defaultConfig,
   ...{database: process.env.DB_DATABASE},
@@ -28,6 +26,7 @@ let licenseDb: any;
 
 const joinFieldSeprator = '||';
 
+// TODO: impplement it with session OR cookies to not fetch license in every page
 export const setLicenseDB = async (host?: string) => {
   if (!host) return false;
   console.info('webUrl', host);
@@ -62,7 +61,6 @@ export async function excuteQuery<T = unknown>({
 }) {
   try {
     const [rows] = await db.query(query, values);
-    console.log(rows);
     return rows;
   } catch (error) {
     console.error(error);

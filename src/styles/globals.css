@@ -35,3 +35,14 @@
   transform: scale(1.01);
 }
 
+#mySplide .splide__arrow {
+  position: absolute !important;
+  top: 50%;
+  transform: translateY(-50%);
+}
+#mySplide .splide__arrow--prev {
+  left: -50px !important;
+}
+#mySplide .splide__arrow--next {
+  right: -50px !important;
+}

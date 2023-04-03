@@ -7,7 +7,7 @@ import Box from '@/components/Box';
 import Link from 'next/link';
 import {Button} from '@/components/Button';
 import {signIn} from 'next-auth/react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {toast} from 'react-toastify';
 import {useRouter} from 'next/router';
 import Image from 'next/image';
@@ -15,6 +15,8 @@ import AuthPageLogo from '@/components/Logos/AuthPageLogo';
 
 const Login = () => {
   const router = useRouter();
+  const {verify} = router.query;
+
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const defaultValues = {
     username: '',
@@ -40,8 +42,11 @@ const Login = () => {
   } = methods;
 
   const formValues = watch();
-
-  console.log(formValues);
+  useEffect(() => {
+    if (verify) {
+      toast.success('Email verified successful.');
+    }
+  }, [verify]);
 
   const onSubmit = async (values: {username: string; password: string}) => {
     const res = await signIn('credentials', {
@@ -52,7 +57,7 @@ const Login = () => {
     });
     console.log(res);
     if (!res?.ok) {
-      toast.error('Unable to login, please re-check your credentials');
+      toast.error('Unable to login, please re-check your credentials or verify your email if you have not');
     } else {
       toast.success('Login successful');
       router.push('/');
@@ -90,6 +95,7 @@ const Login = () => {
                   className={`text-zinc-700 ${
                     formValues.username.length > 0 && 'px-5'
                   }`}
+                  regForm={false}
                 />
               </label>
             </div>
@@ -116,6 +122,7 @@ const Login = () => {
                   className={`text-zinc-700 ${
                     formValues.password.length > 0 && 'px-5'
                   }`}
+                  regForm={false}
                 />
                 <button
                   type="button"

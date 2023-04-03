@@ -3,7 +3,7 @@ import {TJoin} from 'server/models/types';
 export const getJoinsString = (joins: TJoin[], withJoins: string[]) => {
   let joinString = '';
   joins
-    .filter(j => withJoins.includes(j.table))
+    .filter(j => withJoins.includes(j.as))
     .forEach(join => {
       joinString += ` ${join.type} JOIN ${join.table} ${join.as} on ${join.on} `;
     });
@@ -35,7 +35,7 @@ export const getSelectFieldsString = (
 export const getJoinsFields = (joins: TJoin[], withJoins: string[] = []) => {
   if (withJoins.length === 0) return '';
   return joins
-    .filter(j => withJoins.includes(j.table))
+    .filter(j => withJoins.includes(j.as))
     .map(j =>
       j.fields.map(field => `${j.as}.${field} as \`${j.as}||${field}\``)
     )

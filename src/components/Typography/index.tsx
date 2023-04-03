@@ -6,12 +6,12 @@ const sizeVarient = {
   lg: 'text-base',
   xl: 'text-base',
   '2xl': 'text-base',
-  h1: 'text-3xl font-semibold',
-  h2: 'text-2xl font-semibold',
-  h3: 'text-lg md:text-xl font-semibold',
-  h4: 'text-sm md:text-lg  font-semibold',
-  h5: 'text-base font-semibold',
-  h6: 'text-xs md:text-sm font-semibold',
+  h1: 'text-3xl',
+  h2: 'text-2xl',
+  h3: 'text-lg md:text-xl',
+  h4: 'text-sm md:text-lg',
+  h5: 'text-base',
+  h6: 'text-xs md:text-sm',
 };
 
 interface IIconProps {
