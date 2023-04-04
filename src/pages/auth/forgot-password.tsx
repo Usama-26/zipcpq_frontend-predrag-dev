@@ -78,7 +78,7 @@ const Index = () => {
               <div className="mt-3">
                 <label htmlFor="inputEmail" className="relative block">
                   <span
-                    className={`absolute left-4 top-4 z-10 ${
+                    className={`absolute left-4 top-3.5 z-10 ${
                       formValues.email.length > 0 && 'opacity-0'
                     }
                     `}

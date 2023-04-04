@@ -22,9 +22,9 @@ export default function RHFTextField({
           error={error}
           helperText={error?.message}
           className={[
-            'w-full rounded-2xl py-3 px-10 bg-[#F4F4F4] focus:bg-white focus:outline-none border border-transparent focus:border-gray-300 mb-4',
+            'w-full rounded-[15px] h-[46px] text-[14px] px-10 bg-[#F4F4F4] focus:bg-white focus:outline-none border border-transparent focus:border-gray-300 mb-4',
             className,
-            regForm && 'px-2',
+            regForm && 'px-2 border border-[#E2E6EB] rounded-[5px]',
           ].join(' ')}
           {...field}
           {...other}

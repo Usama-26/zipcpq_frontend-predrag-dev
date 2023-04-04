@@ -24,7 +24,7 @@ export default function HomeLayout({
       <Header />
       <div className="yellow-stripe bg-yellow-700 h-16"></div>
 
-      <main className="container mx-auto relative  py-5 text-zinc-700">
+      <main className="container  relative mx-auto py-5 px-20 text-zinc-700">
         {/* Breadcrumb */}
         <div className="text-sm ">
           <ul className="flex flex-row">

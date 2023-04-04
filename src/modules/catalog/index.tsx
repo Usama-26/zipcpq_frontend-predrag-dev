@@ -11,7 +11,7 @@ export default function Catalog({categories}: ICatalogProps) {
       <h4 className="mt-0 pb-6">
         Choose a category to browse Conway product for that machine
       </h4>
-      <div className="h-[750px] overflow-y-scroll grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      <div className="h-[750px] overflow-y-scroll grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {/* Card */}
         {categories.map(category => {
           return (

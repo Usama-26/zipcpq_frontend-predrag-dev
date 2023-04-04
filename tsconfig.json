@@ -22,6 +22,6 @@
       "@/modules/*": ["modules/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "global.d.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "global.d.ts", "src/components/imageGallery/index.tsx"],
   "exclude": ["node_modules"]
 }

@@ -61,13 +61,13 @@ const Register = ({view, fields}: RegisterProps) => {
   return (
     <div className="flex justify-center items-center w-screen h-screen md:bg-gray-100 bg-white">
       <Box>
-        <div className="w-96 md:w-[600px]">
+        <div className="w-96 md:w-[500px]">
           <AuthPageLogo />
           <h1 className="text-[30px] font-bold text-zinc-900 text-center mb-7 font-pt-sans">
             Create new account
           </h1>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-x-10">
               {fields.map((field, index) => (
                 <Suspense key={field.id}>
                   <div
@@ -83,7 +83,15 @@ const Register = ({view, fields}: RegisterProps) => {
                         <RHFTextField
                           name={field.field.slug}
                           placeholder={`${field.field.translation.description}*`}
-                          className={'rounded-md'}
+                          className={`text-[14px] ${
+                            formValues[field.field.slug].length > 0 &&
+                            'rounded-md bg-white border-gray-300'
+                          } ${
+                            field.field.slug === 'email' ||
+                            field.field.slug === 'company'
+                              ? 'w-full h-[36px]'
+                              : ' h-[36px]'
+                          }`}
                           type={field.ft.input_type}
                           regForm={true}
                         />
@@ -95,7 +103,10 @@ const Register = ({view, fields}: RegisterProps) => {
                           <RHFTextField
                             name={field.field.slug}
                             placeholder={`${field.field.translation.description}*`}
-                            className={'rounded-md'}
+                            className={`text-[14px] ${
+                              formValues.password.length > 0 &&
+                              'rounded-md bg-white border-gray-300'
+                            }  h-[36px]`}
                             type={passwordVisibility ? 'text' : 'password'}
                             regForm={true}
                           />
@@ -105,21 +116,21 @@ const Register = ({view, fields}: RegisterProps) => {
                             onClick={() =>
                               setPasswordVisibility(!passwordVisibility)
                             }
-                            className={`absolute right-5 top-4 ${
+                            className={`absolute right-5 top-2.5 ${
                               formValues.password.length > 0
                                 ? 'visible'
                                 : 'invisible'
                             }`}
                           >
                             {passwordVisibility ? (
-                              <Image
+                              <img
                                 src={'/icons/eye-off.svg'}
                                 width={20}
                                 height={20}
                                 alt="Eye icon"
                               />
                             ) : (
-                              <Image
+                              <img
                                 src={'/icons/eye.svg'}
                                 width={20}
                                 height={20}
@@ -140,7 +151,10 @@ const Register = ({view, fields}: RegisterProps) => {
                               <RHFTextField
                                 name="password_confirmation"
                                 placeholder="Password confirmation*"
-                                className={'rounded-md'}
+                                className={`text-[14px] ${
+                                  formValues.password_confirmation.length > 0 &&
+                                  'rounded-md bg-white border-gray-300'
+                                }  h-[36px]`}
                                 type={
                                   passwordVisibilityConf ? 'text' : 'password'
                                 }
@@ -153,7 +167,7 @@ const Register = ({view, fields}: RegisterProps) => {
                                     !passwordVisibilityConf
                                   )
                                 }
-                                className={`absolute right-5 top-4 ${
+                                className={`absolute right-5 top-2.5 ${
                                   formValues.password_confirmation.length > 0
                                     ? 'visible'
                                     : 'invisible'
