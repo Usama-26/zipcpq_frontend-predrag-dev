@@ -44,10 +44,10 @@ export default function Index({
       showSideBar={false}
     >
       <section className="text-black font-poppins mt-4">
-        <div className="mb-10 items-center gap-4 grid lg:grid-cols-12 justify-center ">
-          <div className="lg:col-span-7 w-full  mb-4 ">
+        <div className=" mb-10 flex gap-7 lg:flex-row flex-col ">
+          <div className=" w-full mb-4 ">
             <div className="flex gap-5">
-              <h1 className="font-bold text-[30px] text-start">
+              <h1 className="font-bold md:text-[30px] text-2xl text-start">
                 <span>Conway Gripper Bar Complete for Bobst SP 900</span>
               </h1>
               <div>
@@ -330,7 +330,7 @@ export default function Index({
               </div>
             )}
           </div>
-          <div className="lg:col-span-5  w-full mb-12 relative self-start">
+          <div className=" w-full mb-12 relative ">
             {showProductDetails ? (
               <div className="border border-[#5b5b5b] ">
                 <div className="p-4">
@@ -450,6 +450,14 @@ export default function Index({
                     perMove: 1,
                     gap: '2rem',
                     pagination: false,
+                    breakpoints: {
+                      768: {
+                        perPage: 3,
+                      },
+                      640: {
+                        perPage: 2,
+                      },
+                    },
                   }}
                   className="mx-auto"
                 >

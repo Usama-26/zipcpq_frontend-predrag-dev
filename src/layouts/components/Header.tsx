@@ -55,7 +55,7 @@ const Header = () => {
             </div>
             <div className="border-[#76787a80] border h-8 ml-4" />
             <div className="pl-6">
-              <Menu as="div" className="relative inline-block text-left">
+              <Menu as="div" className="z-10 relative inline-block text-left">
                 <div>
                   <Menu.Button className="inline-flex py-2 items-center gap-3 hover:text-yellow-700">
                     <Image

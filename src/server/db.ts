@@ -12,7 +12,7 @@ const defaultConfig = {
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASS || '',
   waitForConnections: true,
-  connectionLimit: 10,
+  connectionLimit: 100,
   connectTimeout: 60000,
   maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`
   idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000

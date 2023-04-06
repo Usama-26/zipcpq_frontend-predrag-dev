@@ -29,9 +29,9 @@ export default function HomeLayout({
         <SearchInputMobile />
       </div>
 
-      <main className="container relative mx-auto py-5 px-20 text-zinc-700">
+      <main className="container relative mx-auto py-5 md:px-20 px-5 text-zinc-700">
         {/* Breadcrumb */}
-        <div className="text-sm ">
+        <div className="md:text-sm text-xs">
           <ul className="flex flex-row">
             {breadcrumb?.map((item, index) => (
               <Suspense key={item.url}>
@@ -51,7 +51,10 @@ export default function HomeLayout({
             ))}
           </ul>
         </div>
-        <div className="flex lg:flex-nowrap flex-wrap gap-7 mx-auto pb-5">
+        <div
+          className="flex lg:flex-row flex-col lg:items-start items-center
+         gap-7 mx-auto pb-5 mt-4"
+        >
           {showSideBar && (
             <Sidebar
               sidebarCategories={sidebarCategories}
