@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {GetServerSideProps, InferGetServerSidePropsType} from 'next';
 import {setLicenseDB} from '../server/db';
 import categoryModel from 'server/models/categoryModel';

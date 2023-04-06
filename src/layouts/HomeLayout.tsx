@@ -1,9 +1,12 @@
+/* eslint-disable prettier/prettier */
 import Link from 'next/link';
 import React, {Fragment, ReactElement, Suspense, useState} from 'react';
 import {TCategory} from '_types/types';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import {TBreadCrumb} from '_types/ui';
+import {MagnifyingGlassIcon} from '@heroicons/react/24/outline';
+import {SearchInputMobile} from '@/components/SearchInputMobile';
 
 interface IHomeLayoutProps {
   children: ReactElement;
@@ -22,9 +25,11 @@ export default function HomeLayout({
   return (
     <div className="font-poppins">
       <Header />
-      <div className="yellow-stripe bg-yellow-700 h-16"></div>
+      <div className="yellow-stripe bg-yellow-700 h-16">
+        <SearchInputMobile />
+      </div>
 
-      <main className="container  relative mx-auto py-5 px-20 text-zinc-700">
+      <main className="container relative mx-auto py-5 px-20 text-zinc-700">
         {/* Breadcrumb */}
         <div className="text-sm ">
           <ul className="flex flex-row">
@@ -46,7 +51,7 @@ export default function HomeLayout({
             ))}
           </ul>
         </div>
-        <div className="flex gap-7 mx-auto pb-5">
+        <div className="flex lg:flex-nowrap flex-wrap gap-7 mx-auto pb-5">
           {showSideBar && (
             <Sidebar
               sidebarCategories={sidebarCategories}
