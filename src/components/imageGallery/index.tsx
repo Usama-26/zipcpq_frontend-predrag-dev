@@ -19,12 +19,18 @@ const ImageGallery = ({mainImage, thumbnailImages}: any) => {
   };
 
   return (
-    <div className="">
+    <div className="flex md:flex-row  flex-col justify-between gap-4">
       <div className="bg-[#FAF8F8] p-5">
-        <img src={currentImage} alt="" className="" />
+        <img
+          src={currentImage}
+          className="mx-auto h-[320px] w-[320px] object-contain"
+        />
       </div>
-      <div className="flex lg:flex-row flex-col ">
-        <button className="p-2 mb-2" onClick={previousImage}>
+      <div className="flex md:flex-col justify-between mx-auto">
+        <button
+          className="p-2 mb-2 md:rotate-0 -rotate-90"
+          onClick={previousImage}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4 transform rotate-90"
@@ -40,7 +46,7 @@ const ImageGallery = ({mainImage, thumbnailImages}: any) => {
             />
           </svg>
         </button>
-        <div className="flex lg:flex-col flex-row">
+        <div className="flex md:flex-col flex-row">
           {thumbnailImages.map((thumbnail: any, index: any) => (
             <button
               key={index}
@@ -57,7 +63,7 @@ const ImageGallery = ({mainImage, thumbnailImages}: any) => {
             </button>
           ))}
         </div>
-        <button className="p-2 mt-2" onClick={nextImage}>
+        <button className="p-2 mt-2 md:rotate-0 -rotate-90" onClick={nextImage}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4 rotate-90"

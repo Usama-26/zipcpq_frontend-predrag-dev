@@ -1,21 +1,19 @@
-/* eslint-disable @next/next/no-img-element */
 /* eslint-disable prettier/prettier */
 import ProductCard from '@/components/ProductCard';
 import HomeLayout from '@/layouts/HomeLayout';
 import {Tab} from '@headlessui/react';
 import {ChevronRightIcon} from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import {Splide, SplideSlide} from '@splidejs/react-splide';
-import dynamic from 'next/dynamic';
-import ImageGallery from '../../components/imageGallery';
-
-import '@splidejs/react-splide/css';
 import {useState} from 'react';
 import {Button} from '@/components/Button';
 import categoryModel from 'server/models/categoryModel';
 import {TBreadCrumb} from '_types/ui';
 import {setLicenseDB} from 'server/db';
 import {GetServerSideProps, InferGetServerSidePropsType} from 'next';
+
+import {Splide, SplideSlide} from '@splidejs/react-splide';
+import '@splidejs/react-splide/css';
+import ImageGallery from '@/components/ImageGallery';
 
 export default function Index({
   sidebarCategories,
@@ -45,8 +43,8 @@ export default function Index({
     >
       <section className="text-black font-poppins mt-4">
         <div className="mx-auto mb-10 flex lg:flex-row flex-col-reverse gap-7 justify-center">
-          <div className="mb-4 ">
-            <div className="flex gap-5">
+          <div className="lg:basis-7/12 mb-4 ">
+            <div className="flex sm:flex-nowrap flex-wrap gap-5">
               <h1 className="font-bold md:text-[30px] text-2xl text-start">
                 <span>Conway Gripper Bar Complete for Bobst SP 900</span>
               </h1>
@@ -330,7 +328,7 @@ export default function Index({
               </div>
             )}
           </div>
-          <div className="mb-12 relative ">
+          <div className="lg:basis-5/12 lg:border-0 border border-black mb-12 relative ">
             {showProductDetails ? (
               <div className="border border-[#5b5b5b] ">
                 <div className="p-4">
@@ -415,11 +413,11 @@ export default function Index({
           </div>
         </div>
         <Tab.Group>
-          <Tab.List className="flex lg:justify-start mt-10 mb-12">
-            <Tab>
+          <Tab.List className="flex md:justify-start justify-center mt-10 mb-12">
+            <Tab className={'md:inline-block block lg:basis-auto basis-full'}>
               {({selected}) => (
                 <div
-                  className={` border bg-white border-b-transaparent border-[#BDBDBD] rounded-tl text-center w-72 py-4 hover:bg-yellow-700 hover:border ${
+                  className={` border bg-white border-b-transaparent border-[#BDBDBD] rounded-tl text-center lg:w-72  py-4 hover:bg-yellow-700 hover:border ${
                     selected
                       ? 'border border-black border-r-black'
                       : 'border-r-transparent'
@@ -429,10 +427,10 @@ export default function Index({
                 </div>
               )}
             </Tab>
-            <Tab>
+            <Tab className={'md:inline-block block g:basis-auto basis-full'}>
               {({selected}) => (
                 <div
-                  className={` border border-b-transaparent border-[#BDBDBD] rounded-tr text-center w-72 py-4 hover:bg-yellow-700 hover:border' ${
+                  className={` border border-b-transaparent border-[#BDBDBD] rounded-tr text-center lg:w-72  py-4 hover:bg-yellow-700 hover:border' ${
                     selected && 'border border-black'
                   }`}
                 >
@@ -445,6 +443,7 @@ export default function Index({
             <Tab.Panel>
               <div id="mySplide">
                 <Splide
+                  className="mx-auto"
                   options={{
                     perPage: 4,
                     perMove: 1,
@@ -459,10 +458,10 @@ export default function Index({
                       },
                       640: {
                         perPage: 1,
+                        width: '320px',
                       },
                     },
                   }}
-                  className="mx-auto"
                 >
                   <SplideSlide>
                     <ProductCard />
