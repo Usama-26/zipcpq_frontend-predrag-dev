@@ -19,11 +19,11 @@ const ImageGallery = ({mainImage, thumbnailImages}: any) => {
   };
 
   return (
-    <div className="grid md:grid-cols-12 items-center gap-0">
-      <div className="w-full  bg-[#FAF8F8] col-span-10 flex justify-center items-center p-5">
-        <img src={currentImage} alt="" className="w-[500px] h-[400px]" />
+    <div className="">
+      <div className="bg-[#FAF8F8] p-5">
+        <img src={currentImage} alt="" className="" />
       </div>
-      <div className="flex flex-col items-center justify-center col-span-2">
+      <div className="flex lg:flex-row flex-col ">
         <button className="p-2 mb-2" onClick={previousImage}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,7 @@ const ImageGallery = ({mainImage, thumbnailImages}: any) => {
             />
           </svg>
         </button>
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex lg:flex-col flex-row">
           {thumbnailImages.map((thumbnail: any, index: any) => (
             <button
               key={index}
@@ -52,6 +52,7 @@ const ImageGallery = ({mainImage, thumbnailImages}: any) => {
                 width={50}
                 height={50}
                 className="rounded-lg"
+                alt="product-image"
               />
             </button>
           ))}

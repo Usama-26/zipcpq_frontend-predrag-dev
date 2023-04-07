@@ -44,8 +44,8 @@ export default function Index({
       showSideBar={false}
     >
       <section className="text-black font-poppins mt-4">
-        <div className=" mb-10 flex gap-7 lg:flex-row flex-col ">
-          <div className=" w-full mb-4 ">
+        <div className="mx-auto mb-10 flex lg:flex-row flex-col-reverse gap-7 justify-center">
+          <div className="mb-4 ">
             <div className="flex gap-5">
               <h1 className="font-bold md:text-[30px] text-2xl text-start">
                 <span>Conway Gripper Bar Complete for Bobst SP 900</span>
@@ -330,7 +330,7 @@ export default function Index({
               </div>
             )}
           </div>
-          <div className=" w-full mb-12 relative ">
+          <div className="mb-12 relative ">
             {showProductDetails ? (
               <div className="border border-[#5b5b5b] ">
                 <div className="p-4">
@@ -405,7 +405,7 @@ export default function Index({
                 </div>
               </div>
             ) : (
-              <div className="">
+              <div>
                 <ImageGallery
                   mainImage={mainImage}
                   thumbnailImages={thumbnailImages}
@@ -415,7 +415,7 @@ export default function Index({
           </div>
         </div>
         <Tab.Group>
-          <Tab.List className="flex lg:justify-start  mt-10 mb-12">
+          <Tab.List className="flex lg:justify-start mt-10 mb-12">
             <Tab>
               {({selected}) => (
                 <div
@@ -432,7 +432,7 @@ export default function Index({
             <Tab>
               {({selected}) => (
                 <div
-                  className={` border border-b-transaparent border-[#BDBDBD] rounded-tr text-center w-72   py-4 hover:bg-yellow-700 hover:border' ${
+                  className={` border border-b-transaparent border-[#BDBDBD] rounded-tr text-center w-72 py-4 hover:bg-yellow-700 hover:border' ${
                     selected && 'border border-black'
                   }`}
                 >
@@ -451,11 +451,14 @@ export default function Index({
                     gap: '2rem',
                     pagination: false,
                     breakpoints: {
-                      768: {
+                      1024: {
                         perPage: 3,
                       },
-                      640: {
+                      768: {
                         perPage: 2,
+                      },
+                      640: {
+                        perPage: 1,
                       },
                     },
                   }}
