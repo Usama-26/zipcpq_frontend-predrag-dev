@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import Image from 'next/image';
 import Link from 'next/link';
 import {TCategory} from '_types/types';
@@ -11,7 +12,11 @@ export default function Catalog({categories}: ICatalogProps) {
       <h4 className="mt-0 pb-6">
         Choose a category to browse Conway product for that machine
       </h4>
+<<<<<<< HEAD
       <div className="max-h-[750px] overflow-y-scroll overflow-x-hidden grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+=======
+      <div className="max-h-[750px] overflow-y-scroll grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+>>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f
         {/* Card */}
         {categories.map(category => {
           return (

@@ -1,13 +1,12 @@
+<<<<<<< HEAD:src/pages/catalog/[...slug].tsx
+=======
+/* eslint-disable prettier/prettier */
+>>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f:src/pages/product/[slug].tsx
 import ProductCard from '@/components/ProductCard';
 import HomeLayout from '@/layouts/HomeLayout';
 import {Tab} from '@headlessui/react';
 import {ChevronRightIcon} from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import {Splide, SplideSlide} from '@splidejs/react-splide';
-import dynamic from 'next/dynamic';
-import ImageGallery from '../../components/imageGallery';
-
-import '@splidejs/react-splide/css';
 import {useState} from 'react';
 import {Button} from '@/components/Button';
 import {TBreadCrumb} from '_types/ui';
@@ -15,6 +14,10 @@ import {setLicenseDB} from 'server/db';
 import {GetServerSideProps, InferGetServerSidePropsType} from 'next';
 import productModel from 'server/models/productModel';
 import categoryModel from 'server/models/categoryModel';
+
+import {Splide, SplideSlide} from '@splidejs/react-splide';
+import '@splidejs/react-splide/css';
+import ImageGallery from '@/components/ImageGallery';
 
 export default function Index({
   product,
@@ -39,6 +42,7 @@ export default function Index({
     setActive3d(!active3d);
   };
   return (
+<<<<<<< HEAD:src/pages/catalog/[...slug].tsx
     <HomeLayout breadcrumb={breadcrumb}>
       <section className="text-black font-poppins mt-4 w-full ">
         <div className="mx-auto mb-10 flex  lg:flex-row flex-col-reverse gap-7 justify-center">
@@ -46,6 +50,19 @@ export default function Index({
             <div className="flex sm:flex-nowrap flex-wrap  gap-5">
               <h1 className="font-bold md:text-[30px] text-2xl md:text-start text-center">
                 <span>{product.title}</span>
+=======
+    <HomeLayout
+      sidebarCategories={sidebarCategories}
+      breadcrumb={[]}
+      showSideBar={false}
+    >
+      <section className="text-black font-poppins mt-4">
+        <div className="mx-auto mb-10 flex lg:flex-row flex-col-reverse gap-7 justify-center">
+          <div className="lg:basis-7/12 mb-4 ">
+            <div className="flex sm:flex-nowrap flex-wrap gap-5">
+              <h1 className="font-bold md:text-[30px] text-2xl text-start">
+                <span>Conway Gripper Bar Complete for Bobst SP 900</span>
+>>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f:src/pages/product/[slug].tsx
               </h1>
               <div>
                 <Button
@@ -325,7 +342,11 @@ export default function Index({
               </div>
             )}
           </div>
+<<<<<<< HEAD:src/pages/catalog/[...slug].tsx
           <div className="lg:basis-5/12 border-black mb-12 relative mx-auto md:mx-0">
+=======
+          <div className="lg:basis-5/12 lg:border-0 border border-black mb-12 relative ">
+>>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f:src/pages/product/[slug].tsx
             {showProductDetails ? (
               <div className="border border-[#5b5b5b]">
                 <div className="p-4">
@@ -400,7 +421,7 @@ export default function Index({
                 </div>
               </div>
             ) : (
-              <div className="">
+              <div>
                 <ImageGallery
                   mainImage={mainImage}
                   thumbnailImages={thumbnailImages}
@@ -440,6 +461,7 @@ export default function Index({
             <Tab.Panel>
               <div id="mySplide">
                 <Splide
+                  className="mx-auto"
                   options={{
                     perPage: 4,
                     perMove: 1,
@@ -458,7 +480,10 @@ export default function Index({
                       },
                     },
                   }}
+<<<<<<< HEAD:src/pages/catalog/[...slug].tsx
                   className="mx-auto px-6 md:px-0"
+=======
+>>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f:src/pages/product/[slug].tsx
                 >
                   <SplideSlide>
                     <ProductCard />

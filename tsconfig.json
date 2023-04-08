@@ -19,9 +19,9 @@
       "@/components/*": ["components/*"],
       "@/layouts/*": ["layouts/*"],
       "@/lib/*": ["lib/*"],
-      "@/modules/*": ["modules/*"],
+      "@/modules/*": ["modules/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "global.d.ts", "src/components/imageGallery/index.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "global.d.ts"],
   "exclude": ["node_modules"]
 }

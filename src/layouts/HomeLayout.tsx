@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import Link from 'next/link';
 import React, {Fragment, ReactElement, Suspense, useState} from 'react';
 import {TCategory} from '_types/types';
@@ -27,7 +28,11 @@ export default function HomeLayout({
 
       <main className="container relative mx-auto py-5 md:px-20 px-5 text-zinc-700">
         {/* Breadcrumb */}
+<<<<<<< HEAD
         <div className="text-sm">
+=======
+        <div className="md:text-sm text-xs">
+>>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f
           <ul className="flex flex-row">
             {breadcrumb?.map((item, index) => (
               <Suspense key={item.url}>
@@ -51,7 +56,11 @@ export default function HomeLayout({
           className="flex lg:flex-row flex-col lg:items-start items-center
          gap-7 mx-auto pb-5 mt-4"
         >
+<<<<<<< HEAD
           {sidebarCategories && (
+=======
+          {showSideBar && (
+>>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f
             <Sidebar
               sidebarCategories={sidebarCategories}
               breadcrumb={breadcrumb}

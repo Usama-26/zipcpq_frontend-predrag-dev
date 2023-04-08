@@ -14,7 +14,13 @@ export default function ProductCardExtended({
       <div className=" transition-transform duration-100 hover:bg-[#EEEAEA] p-2 rounded-md ">
         <div className="w-full flex md:flex-row flex-col justify-between items-center rounded-md py-5 px-4 pr-0 font-poppins text-black border bg-white cursor-pointer ">
           <div className="md:basis-3/5 basis-full md:order-1 order-2 md:py-0 py-4">
+<<<<<<< HEAD
             <h1 className="md:text-2xl text-xl font-bold">{product.title}</h1>
+=======
+            <h1 className="md:text-2xl text-xl font-bold">
+              Conway Gripper Bar Complete for Bobst SP 900
+            </h1>
+>>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f
             <div className="my-2">
               {product?.product_identifiers?.map(identifier => (
                 <Suspense key={identifier.id}>
@@ -27,8 +33,15 @@ export default function ProductCardExtended({
 
               <span>Compare to BSA04120000FM</span>
             </div>
+<<<<<<< HEAD
             <p className="mb-8 md:text-base text-sm font-poppins">
               {product.description}
+=======
+            <p className="mb-8 md:text-base text-sm">
+              Conway Gripper Bar complete for Bobst die cutters SP 900 E and SP
+              900 ER. The axles come installed in the end fittings. Contact us
+              for a quote.
+>>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f
             </p>
             <div className="flex gap-3 font-poppins">
               <button className="px-5 py-1 bg-[#5B5B5B] rounded-lg font-medium border border-transparent text-white hover:text-black sm:text-base text-sm hover:border-black hover:bg-white transition duration-200 ">
