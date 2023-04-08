@@ -38,7 +38,10 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
   ];
   return {
     props: {
-      categories: await categoryModel.find({where: {parent_id: 1}}),
+      categories: await categoryModel.find({
+        where: {parent_id: 1},
+        withJoins: ['category_media'],
+      }),
       sidebarCategories: await categoryModel.getCategoriesHierarchy({}),
       breadcrumb,
     },

@@ -59,22 +59,22 @@ const Register = ({view, fields}: RegisterProps) => {
     }
   };
   return (
-    <div className="flex justify-center items-center w-screen h-screen md:bg-gray-100 bg-white">
+    <div className="flex justify-center items-center md:w-screen md:h-screen  md:bg-gray-100 bg-white">
       <Box>
-        <div className="w-96 md:w-[500px]">
+        <div className="w-full md:w-[500px]">
           <AuthPageLogo />
           <h1 className="text-[30px] font-bold text-zinc-900 text-center mb-7 font-pt-sans">
             Create new account
           </h1>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-2 gap-x-10">
+            <div className="grid md:grid-cols-2 grid-cols-1 md:gap-x-10 gap-x-1">
               {fields.map((field, index) => (
                 <Suspense key={field.id}>
                   <div
                     className={
                       field.field.slug === 'email' ||
                       field.field.slug === 'company'
-                        ? 'col-span-2'
+                        ? 'md:col-span-2 col-span-1'
                         : ''
                     }
                   >
@@ -82,7 +82,11 @@ const Register = ({view, fields}: RegisterProps) => {
                       <FormInputGroup>
                         <RHFTextField
                           name={field.field.slug}
-                          placeholder={`${field.field.translation.description}*`}
+                          placeholder={
+                            field.visible === 'required'
+                              ? `${field.field.translation.description}*`
+                              : `${field.field.translation.description}`
+                          }
                           className={`text-[14px] ${
                             formValues[field.field.slug].length > 0 &&
                             'rounded-md bg-white border-gray-300'
@@ -123,14 +127,14 @@ const Register = ({view, fields}: RegisterProps) => {
                             }`}
                           >
                             {passwordVisibility ? (
-                              <img
+                              <Image
                                 src={'/icons/eye-off.svg'}
                                 width={20}
                                 height={20}
                                 alt="Eye icon"
                               />
                             ) : (
-                              <img
+                              <Image
                                 src={'/icons/eye.svg'}
                                 width={20}
                                 height={20}
@@ -145,53 +149,51 @@ const Register = ({view, fields}: RegisterProps) => {
                   {field.validation_rules?.map(
                     validation =>
                       validation.slug == 'confirmed' && (
-                        <>
-                          <FormInputGroup>
-                            <>
-                              <RHFTextField
-                                name="password_confirmation"
-                                placeholder="Password confirmation*"
-                                className={`text-[14px] ${
-                                  formValues.password_confirmation.length > 0 &&
-                                  'rounded-md bg-white border-gray-300'
-                                }  h-[36px]`}
-                                type={
-                                  passwordVisibilityConf ? 'text' : 'password'
-                                }
-                                regForm={true}
-                              />
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  setPasswordVisibilityConf(
-                                    !passwordVisibilityConf
-                                  )
-                                }
-                                className={`absolute right-5 top-2.5 ${
-                                  formValues.password_confirmation.length > 0
-                                    ? 'visible'
-                                    : 'invisible'
-                                }`}
-                              >
-                                {passwordVisibilityConf ? (
-                                  <Image
-                                    src={'/icons/eye-off.svg'}
-                                    width={20}
-                                    height={20}
-                                    alt="Eye icon"
-                                  />
-                                ) : (
-                                  <Image
-                                    src={'/icons/eye.svg'}
-                                    width={20}
-                                    height={20}
-                                    alt="Eye Off icon"
-                                  />
-                                )}
-                              </button>
-                            </>
-                          </FormInputGroup>
-                        </>
+                        <FormInputGroup key={validation.slug}>
+                          <>
+                            <RHFTextField
+                              name="password_confirmation"
+                              placeholder="Password confirmation*"
+                              className={`text-[14px] ${
+                                formValues.password_confirmation.length > 0 &&
+                                'rounded-md bg-white border-gray-300'
+                              }  h-[36px]`}
+                              type={
+                                passwordVisibilityConf ? 'text' : 'password'
+                              }
+                              regForm={true}
+                            />
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setPasswordVisibilityConf(
+                                  !passwordVisibilityConf
+                                )
+                              }
+                              className={`absolute right-5 top-2.5 ${
+                                formValues.password_confirmation.length > 0
+                                  ? 'visible'
+                                  : 'invisible'
+                              }`}
+                            >
+                              {passwordVisibilityConf ? (
+                                <Image
+                                  src={'/icons/eye-off.svg'}
+                                  width={20}
+                                  height={20}
+                                  alt="Eye icon"
+                                />
+                              ) : (
+                                <Image
+                                  src={'/icons/eye.svg'}
+                                  width={20}
+                                  height={20}
+                                  alt="Eye Off icon"
+                                />
+                              )}
+                            </button>
+                          </>
+                        </FormInputGroup>
                       )
                   )}
                 </Suspense>

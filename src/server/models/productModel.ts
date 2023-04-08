@@ -3,7 +3,7 @@ import {
   getSelectFieldsString,
   makeRelationObject,
 } from 'server/utils/db-helper';
-import {TProduct} from '_types/types';
+import {TProduct, TProductIdentifier} from '_types/types';
 import {baseFindFirst, baseFind} from '../db';
 import categoryModel from './categoryModel';
 import productBrandModel from './productBrandModel';
@@ -12,6 +12,10 @@ import productTypeModel from './productTypeModel';
 import typeModel from './typeModel';
 import {TJoin, TModel} from './types';
 import userModel from './userModel';
+import productIdentifierModel from './productIdentifierModel';
+import productIdentifierRelModel from './productIdentifierRelModel';
+import moduleMediaRelModel from './moduleMediaRelModel';
+import productRelatedModel from './productRelatedModel';
 
 const tableName = 'products';
 const columns = [
@@ -37,12 +41,9 @@ const columns = [
 const defaultCols = [
   'id',
   'title',
-  'category_id',
   'short_description',
   'description',
   'status_id',
-  'created_by',
-  'modified_by',
   'slug',
   'availability',
   'purchasability',
@@ -50,8 +51,7 @@ const defaultCols = [
   'product_model_id',
   'type_id',
   'product_type_id',
-  'created_at',
-  'updated_at',
+  'default_id',
 ];
 
 const joins: TJoin[] = [
@@ -92,45 +92,71 @@ const joins: TJoin[] = [
   },
 ];
 
-const findFirst = async () => {
-  return await baseFindFirst({
-    licenseDb: true,
-    query: `select * from ${tableName} where custom_form_id=?`,
-    values: [1],
-  });
-};
-
-const findBySlug = async (slug: string) => {
-  const withJoins = ['created', 'pt'];
+const findFirst = async ({
+  where,
+  withJoins = [],
+}: {
+  where: {id: number} | {slug: string};
+  withJoins?: string[];
+}) => {
   const fields = getSelectFieldsString(tableName, {
     cols: columns,
     joins,
     withJoins,
   });
   const joinsQuery = getJoinsString(joins, withJoins);
-  let query = `select ${fields} from ${tableName} ${joinsQuery} limit 1`;
+  const whereCond: string[] = [];
 
-  return await baseFindFirst<TProduct>({
+  if ('id' in where) {
+    whereCond.push(`${tableName}.id='${where.id}'`);
+  } else if ('slug' in where) {
+    whereCond.push(`${tableName}.slug='${where.slug}'`);
+  }
+
+  const query = `select ${fields} from ${tableName} ${joinsQuery} ${
+    whereCond.length > 0 ? 'WHERE ' + whereCond.join(' AND ') : ''
+  } limit 1`;
+  console.log(query);
+  const result = await baseFindFirst<TProduct>({
     licenseDb: true,
     query: query,
-    values: [slug],
+    values: [],
   });
+  if (result) {
+    if (withJoins.includes('product_identifiers')) {
+      result['product_identifiers'] = await getProductIdentifiers(result);
+    }
+    if (withJoins.includes('product_medias')) {
+      result['product_medias'] = await getMedias(result);
+    }
+    if (withJoins.includes('related_products')) {
+      result['related_products'] = await find({
+        where: {from_related_product: result.id},
+      });
+    }
+  }
+
+  return result;
 };
 
 const find = async ({
   where,
   withJoins = [],
 }: {
-  where?: {category_ids?: number[]; category_slugs?: string[]};
+  where?: {
+    category_ids?: number[];
+    category_slugs?: string[];
+    from_related_product?: number;
+  };
   withJoins?: string[];
-}): Promise<TProduct[] | any[]> => {
+}): Promise<TProduct[]> => {
   const fields = getSelectFieldsString(tableName, {
     cols: columns,
     joins,
     withJoins,
   });
   const joinsQuery = getJoinsString(joins, withJoins);
-  let whereCond: string[] = [];
+  const whereCond: string[] = [];
   if (where) {
     if (where.category_ids) {
       whereCond.push(
@@ -146,34 +172,78 @@ const find = async ({
         )}'))) `
       );
     }
+    if (where.from_related_product) {
+      whereCond.push(
+        `${tableName}.id IN (SELECT rel_product_id from product_related where product_id = ${where.from_related_product})`
+      );
+    }
   }
 
-  let query = `select ${fields} from ${tableName} ${joinsQuery} ${
+  const query = `select ${fields} from ${tableName} ${joinsQuery} ${
     whereCond.length > 0 ? 'where ' + whereCond.join(' AND ') : ''
   }`;
 
-  return await baseFind<TProduct[] | []>({
+  const rows = await baseFind<TProduct[] | []>({
     licenseDb: true,
     query: query,
     values: [],
   });
+
+  return await Promise.all(
+    rows.map(async row => {
+      if (withJoins.includes('product_identifiers')) {
+        row['product_identifiers'] = await getProductIdentifiers(row);
+      }
+      if (withJoins.includes('product_medias')) {
+        row['product_medias'] = await getMedias(row);
+      }
+      if (withJoins.includes('related_products')) {
+        row['related_products'] = await find({
+          where: {from_related_product: row.id},
+        });
+      }
+
+      return row;
+    })
+  );
 };
 
 const productModel: TModel & {
-  findFirst: ({}: any) => Promise<TProduct | null>;
-  findBySlug: (slug: string) => Promise<TProduct | null>;
+  findFirst: ({
+    where,
+    withJoins = [],
+  }: {
+    where: {id: number} | {slug: string};
+    withJoins?: string[];
+  }) => Promise<TProduct | null>;
   find: ({
     where,
     withJoins = [],
   }: {
-    where?: {category_ids?: number[]; category_slugs?: string[]};
+    where?: {
+      category_ids?: number[];
+      category_slugs?: string[];
+      from_related_product?: number;
+    };
     withJoins?: string[];
   }) => Promise<TProduct[] | []>;
 } = {
   tableName,
   columns,
+  defaultCols,
   findFirst,
-  findBySlug,
   find,
 };
 export default productModel;
+
+const getProductIdentifiers = async (product: TProduct) =>
+  await productIdentifierRelModel.find({
+    where: {product_ids: [product.id]},
+    withJoins: ['pi'],
+  });
+
+const getMedias = async (product: TProduct) =>
+  await moduleMediaRelModel.find({
+    where: {record_id: product.id, table_rel: tableName},
+    withJoins: ['media'],
+  });

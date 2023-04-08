@@ -17,6 +17,7 @@ const defaultConfig = {
   idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000
   queueLimit: 0,
 };
+
 const db = mysql.createPool({
   ...defaultConfig,
   ...{database: process.env.DB_DATABASE},
@@ -35,7 +36,7 @@ export const setLicenseDB = async (host?: string) => {
     host = 'cmachines-dev1.zipcpq.com';
   }
   const license = await licenseModel.findLicense(host);
-  console.log('lilicense', license);
+  console.log('lilicense', license?.id);
   if (!license) {
     return false;
   }
@@ -59,8 +60,10 @@ export async function excuteQuery<T = unknown>({
   query: string;
   values: any;
 }) {
+  const connection = await db.getConnection();
   try {
-    const [rows] = await db.query(query, values);
+    const [rows] = await connection.execute(query, values);
+    connection.release();
     return rows;
   } catch (error) {
     console.error(error);
@@ -75,8 +78,10 @@ export async function excuteLicenseDBQuery<T = unknown>({
   query: string;
   values: any;
 }) {
+  const connection = await licenseDb.getConnection();
   try {
-    const [rows] = await licenseDb.query(query, values);
+    const [rows] = await connection.execute(query, values);
+    connection.release();
     return rows;
   } catch (error) {
     console.error(error);
@@ -116,7 +121,9 @@ export const baseFindFirst = async <T = any>({
   let results: any = licenseDb
     ? await excuteLicenseDBQuery({query: firstQuery, values})
     : await excuteQuery({query: firstQuery, values});
+
   if (results?.error) return null;
+
   if (results && Array.isArray(results) && results.length > 0)
     return makeSerializable(results).map(row =>
       makeRelationObject(row)

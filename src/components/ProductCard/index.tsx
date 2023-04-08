@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function ProductCard() {
   return (
-    <div className=" rounded-md border border-[#C0C0C0] mx-auto  ">
+    <div className=" rounded-md border border-[#C0C0C0] mx-auto ">
       <div className="p-4">
         <Image
           src="/images/products/gear.png"
@@ -22,7 +22,7 @@ export default function ProductCard() {
       </p>
       <div className=" pb-6">
         <button className=" block w-4/5 mx-auto px-5 py-1.5 text-black rounded-lg font-medium border bg-yellow-700 border-black  transition duration-200 hover:font-bold">
-          Add to RFQ
+          Learn more
         </button>
       </div>
     </div>

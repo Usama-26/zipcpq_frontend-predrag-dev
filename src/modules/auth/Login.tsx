@@ -137,14 +137,14 @@ const Login = () => {
                   }`}
                 >
                   {passwordVisibility ? (
-                    <img
+                    <Image
                       src={'/icons/eye-off.svg'}
                       width={20}
                       height={20}
                       alt="Eye icon"
                     />
                   ) : (
-                    <img
+                    <Image
                       src={'/icons/eye.svg'}
                       width={20}
                       height={20}

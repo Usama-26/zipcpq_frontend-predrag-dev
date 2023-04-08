@@ -17,7 +17,6 @@ const FileInput = React.forwardRef(
     const onfileChange = (e: React.FormEvent<HTMLInputElement>) => {
       const target = e.target as HTMLInputElement;
       if (target && target?.files && target?.files?.length > 0) {
-        console.log(target && target.files);
         setFileName(target.files[0]['name']);
         onFileSelect && onFileSelect(target.files);
       }

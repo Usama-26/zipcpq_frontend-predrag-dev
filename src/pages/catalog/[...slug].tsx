@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable prettier/prettier */
 import ProductCard from '@/components/ProductCard';
 import HomeLayout from '@/layouts/HomeLayout';
 import {Tab} from '@headlessui/react';
@@ -12,14 +10,17 @@ import ImageGallery from '../../components/imageGallery';
 import '@splidejs/react-splide/css';
 import {useState} from 'react';
 import {Button} from '@/components/Button';
-import categoryModel from 'server/models/categoryModel';
 import {TBreadCrumb} from '_types/ui';
 import {setLicenseDB} from 'server/db';
 import {GetServerSideProps, InferGetServerSidePropsType} from 'next';
+import productModel from 'server/models/productModel';
+import categoryModel from 'server/models/categoryModel';
 
 export default function Index({
-  sidebarCategories,
+  product,
+  breadcrumb,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  console.log('product', product);
   const [showProductDetails, setShowProductDetails] = useState(false);
   const [active2d, setActive2d] = useState(true);
   const [active3d, setActive3d] = useState(false);
@@ -38,17 +39,13 @@ export default function Index({
     setActive3d(!active3d);
   };
   return (
-    <HomeLayout
-      sidebarCategories={sidebarCategories}
-      breadcrumb={[]}
-      showSideBar={false}
-    >
-      <section className="text-black font-poppins mt-4">
-        <div className="mb-10 items-center gap-4 grid lg:grid-cols-12 justify-center ">
-          <div className="lg:col-span-7 w-full  mb-4 ">
-            <div className="flex gap-5">
-              <h1 className="font-bold text-[30px] text-start">
-                <span>Conway Gripper Bar Complete for Bobst SP 900</span>
+    <HomeLayout breadcrumb={breadcrumb}>
+      <section className="text-black font-poppins mt-4 w-full ">
+        <div className="mx-auto mb-10 flex  lg:flex-row flex-col-reverse gap-7 justify-center">
+          <div className="lg:basis-7/12 mb-4 ">
+            <div className="flex sm:flex-nowrap flex-wrap  gap-5">
+              <h1 className="font-bold md:text-[30px] text-2xl md:text-start text-center">
+                <span>{product.title}</span>
               </h1>
               <div>
                 <Button
@@ -63,10 +60,9 @@ export default function Index({
               </div>
             </div>
             {showProductDetails ? (
-              <div className=" my-8">
-                <div className="overflow-x-auto w-full">
-                  <table className="table w-full text-sm">
-                    {/* head */}
+              <div className="my-8 ">
+                <div className="overflow-x-auto w-[350px] md:w-full mx-auto">
+                  <table className="table text-sm table-auto">
                     <thead>
                       <tr className="uppercase">
                         <th className="p-2"></th>
@@ -74,12 +70,11 @@ export default function Index({
                         <th className="p-2">QTY</th>
                         <th className="p-2">CMI Part No.</th>
                         <th className="p-2">Description</th>
-                        <th className="p-2">OEM Part No.</th>
+                        <th className="p-2">Compare to OEM</th>
                         <th className="p-2"></th>
                       </tr>
                     </thead>
                     <tbody>
-                      {/* row 1 */}
                       <tr>
                         <td className="p-2 text-center">
                           <input type="checkbox" className="checkbox" />
@@ -273,7 +268,7 @@ export default function Index({
                         </td>
                       </tr>
                     </tbody>
-                    {/* foot */}
+
                     <tfoot className="rounded-none">
                       <tr>
                         <th className="p-2 text-center">
@@ -291,9 +286,9 @@ export default function Index({
                 </div>
                 <Button
                   disabled
-                  className="rounded-md gap-2 hover:!bg-yellow-700 hover:!text-black hover:!border-l-black border-l border-transparent float-right uppercase mt-4 h-8 !py-1 !text-sm !bg-[#5B5B5B] disabled:bg-[#bdbdbd]"
+                  className="rounded-md gap-2 hover:!bg-yellow-700 hover:!text-black hover:!border-l-black border-l border-transparent float-right uppercase mt-4 h-8 !py-1 !text-sm !bg-[#5B5B5B] disabled:bg-[#bdbdbd] md:mr-24"
                 >
-                  <span>Add to RFQ</span>
+                  <span>Learn more</span>
                 </Button>
               </div>
             ) : (
@@ -330,9 +325,9 @@ export default function Index({
               </div>
             )}
           </div>
-          <div className="lg:col-span-5  w-full mb-12 relative self-start">
+          <div className="lg:basis-5/12 border-black mb-12 relative mx-auto md:mx-0">
             {showProductDetails ? (
-              <div className="border border-[#5b5b5b] ">
+              <div className="border border-[#5b5b5b]">
                 <div className="p-4">
                   <Image
                     src="/images/products/gripper-bar.png"
@@ -415,11 +410,11 @@ export default function Index({
           </div>
         </div>
         <Tab.Group>
-          <Tab.List className="flex lg:justify-start  mt-10 mb-12">
-            <Tab>
+          <Tab.List className="flex md:justify-start justify-center mt-10 mb-12">
+            <Tab className={'md:inline-block block lg:basis-auto basis-full'}>
               {({selected}) => (
                 <div
-                  className={` border bg-white border-b-transaparent border-[#BDBDBD] rounded-tl text-center w-72 py-4 hover:bg-yellow-700 hover:border ${
+                  className={` border bg-white border-b-transaparent border-[#BDBDBD] rounded-tl text-center lg:w-72  py-4 hover:bg-yellow-700 hover:border ${
                     selected
                       ? 'border border-black border-r-black'
                       : 'border-r-transparent'
@@ -429,10 +424,10 @@ export default function Index({
                 </div>
               )}
             </Tab>
-            <Tab>
+            <Tab className={'md:inline-block block g:basis-auto basis-full'}>
               {({selected}) => (
                 <div
-                  className={` border border-b-transaparent border-[#BDBDBD] rounded-tr text-center w-72   py-4 hover:bg-yellow-700 hover:border' ${
+                  className={` border border-b-transaparent border-[#BDBDBD] rounded-tr text-center lg:w-72  py-4 hover:bg-yellow-700 hover:border' ${
                     selected && 'border border-black'
                   }`}
                 >
@@ -450,8 +445,20 @@ export default function Index({
                     perMove: 1,
                     gap: '2rem',
                     pagination: false,
+                    breakpoints: {
+                      1024: {
+                        perPage: 3,
+                      },
+                      768: {
+                        perPage: 2,
+                      },
+                      640: {
+                        perPage: 1,
+                        width: '320px',
+                      },
+                    },
                   }}
-                  className="mx-auto"
+                  className="mx-auto px-6 md:px-0"
                 >
                   <SplideSlide>
                     <ProductCard />
@@ -484,7 +491,13 @@ export default function Index({
                 </p>
               </div>
               <div>
-                <img src="/images/logo.png" alt="" className="opacity-50" />
+                <Image
+                  src="/images/logo.png"
+                  alt=""
+                  className="opacity-50"
+                  width={200}
+                  height={200}
+                />
               </div>
             </Tab.Panel>
           </Tab.Panels>
@@ -495,22 +508,49 @@ export default function Index({
 }
 
 export const getServerSideProps: GetServerSideProps = async ({query, req}) => {
+  console.log('query', query);
+
   const {slug} = query;
-  if (!(await setLicenseDB(req.headers.host))) {
+  if (!(await setLicenseDB(req.headers.host)) || !(slug?.length === 2)) {
     return {
       notFound: true,
     };
   }
+  const product = await productModel.findFirst({
+    where: {slug: slug[1] as string},
+    withJoins: ['related_products'],
+  });
+  const category = await categoryModel.findFirst({
+    where: {slug: slug[0] as string},
+    withJoins: ['parent', 'children'],
+  });
   const breadcrumb: TBreadCrumb[] = [
     {
-      title: 'Product',
-      url: '/',
+      title: 'Product Catalog',
+      url: '/catalog',
     },
   ];
+  if (category.parent) {
+    breadcrumb.push({
+      title: category.parent.name,
+      url: '/catalog/' + category.parent.slug,
+    });
+  }
+
+  breadcrumb.push({
+    title: category.name,
+    url: '/catalog/' + category.slug,
+  });
+
+  breadcrumb.push({
+    title: product?.title || '',
+    url: '/catalog/' + category.slug + product?.slug,
+    active: true,
+  });
 
   return {
     props: {
-      sidebarCategories: await categoryModel.getCategoriesHierarchy({}),
+      product,
       breadcrumb,
     },
   };

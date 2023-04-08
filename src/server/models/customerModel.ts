@@ -57,7 +57,6 @@ const findByCredentials = async ({
   });
   if (user) {
     const match = await bcrypt.compare(password, user.password);
-    console.log('match', match);
     if (match) return user;
     return null;
   }
@@ -72,14 +71,13 @@ const create = async ({data}: {data: {[key: string]: any}}) => {
     table: tableName,
     data,
   });
-  let createdData = null;
+  let createdData: TCustomer | null = null;
   if (result) {
     createdData = await findFirst(`id=${result.insertId}`);
-    console.log(createdData);
 
     const token = jwt.sign(
       {id: result.insertedId},
-      process.env.NEXTAUTH_SECRET + result.email,
+      process.env.NEXTAUTH_SECRET + createdData?.email!,
       {
         expiresIn: '1d',
       }
@@ -94,7 +92,6 @@ const create = async ({data}: {data: {[key: string]: any}}) => {
     });
     console.log('Message sent: %s', info.messageId);
   }
-  console.log('createdData', createdData);
   return true;
 };
 
@@ -109,7 +106,7 @@ const forgotPassword = async (email: string): Promise<boolean> => {
     const token = await customerPasswordResetModel.create(email);
     const html = render(
       ResetPasswordEmail({
-        resetPasswordLink: `${process.env.APP_URL}/reset-password?token=${token}`,
+        resetPasswordLink: `${process.env.APP_URL}/auth/reset-password?token=${token?.token}&email=${token?.email}`,
       })
     );
     if (token) {
@@ -129,34 +126,34 @@ const forgotPassword = async (email: string): Promise<boolean> => {
 
 const verifyEmail = async (token: string, email: string): Promise<boolean> => {
   const user = await customerModel.findFirst(`email='${email}'`);
-  console.log('userhhhh', user);
-  if (user.email_verified_at) {
+
+  if (user.email_verified_at !== null) {
     return true;
   }
-  console.log('userffff', user);
-  console.log('token', token);
+
   if (!token) {
     return false;
   }
 
   const isValid = await new Promise(resolve => {
-    jwt.verify(token as string, process.env.NEXTAUTH_SECRET! + email, err => {
+    jwt.verify(token as string, process.env.NEXTAUTH_SECRET + email, err => {
       if (err) resolve(false);
       if (!err) resolve(true);
     });
   });
-  console.log('isValid', isValid);
+
   if (!isValid) {
     return false;
   }
 
-  const result = await baseUpdateRecord({
+  await baseUpdateRecord({
     licenseDb: true,
     table: 'customers',
-    data: {email_verified_at: new Date().toISOString()},
+    data: {
+      email_verified_at: moment().format(),
+    },
     where: `email='${email}'`,
   });
-  console.log('verify updated', result);
 
   const html = render(WelcomeEmail());
   await sendMail({
@@ -175,17 +172,27 @@ const resetPassword = async (data: {
   const token = await customerPasswordResetModel.findFirst(
     `email='${data.email}' and token='${data.token}'`
   );
-  const diff: number = moment().diff(moment(token.created_at), 'minutes'); // 1
-  if (diff > (Number(process.env.RESET_PW_EXPIRATION) || 5)) {
-    return 'TOKEN_EXPIRED';
-  }
 
-  const newHash = await bcrypt.hash(data.password, BCRYPT_SALT_ROUND);
   if (token) {
+    const diff = moment().diff(moment(token.created_at), 'minutes'); // 1
+    console.log('diffe:-', diff, Number(process.env.RESET_PW_EXPIRATION) || 5);
+    if (diff > (Number(process.env.RESET_PW_EXPIRATION) || 5)) {
+      await customerPasswordResetModel.deleteRecord(
+        `email='${data.email}' and token='${data.token}'`
+      );
+      return 'TOKEN_EXPIRED';
+    }
+
+    const newHash = await bcrypt.hash(data.password, BCRYPT_SALT_ROUND);
+    const user = await isMailExist(data.email);
+    const saveData: any = {password: newHash};
+    if (user.email_verified_at === null) {
+      saveData['email_verified_at'] = moment().format();
+    }
     const result = await baseUpdateRecord({
       licenseDb: true,
       table: tableName,
-      data: {password: newHash},
+      data: saveData,
       where: `email='${data.email}'`,
     });
     if (result)

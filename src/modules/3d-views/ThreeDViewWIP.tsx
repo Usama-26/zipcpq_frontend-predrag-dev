@@ -1561,7 +1561,7 @@ const ThreeDView = () => {
               fontSize: 'large',
             }}
           >
-            ADD TO RFQ
+            Learn more
           </button>
         </div>
       </div>

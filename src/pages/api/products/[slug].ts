@@ -4,7 +4,9 @@ import productModel from 'server/models/productModel';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {slug} = req.query;
-  res.status(200).json(await productModel.findBySlug(slug as string));
+  res
+    .status(200)
+    .json(await productModel.findFirst({where: {slug: slug as string}}));
 }
 
 export default withLicenseDB(handler);

@@ -103,10 +103,11 @@ export type TCategory = {
   updated_at: string;
   slug: string;
   children?: TCategory[];
+  category_media?: TModuleMediaRel;
 };
 
 export type TProduct = {
-  id: string;
+  id: number;
   title: string;
   category_id: string;
   short_description: string;
@@ -121,6 +122,50 @@ export type TProduct = {
   product_model_id: string;
   type_id: string;
   product_type_id: string;
+  created_at: string;
+  updated_at: string;
+  product_identifiers?: TProductIdentifierRel[];
+  product_medias?: TModuleMediaRel[];
+  related_products?: TProduct[];
+};
+
+export type TProductIdentifier = {
+  id: string;
+  name: string;
+  short_name: string;
+  default: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type TProductIdentifierRel = {
+  id: number;
+  product_identifier_id: string;
+  product_id: string;
+  value: string;
+  parent: string;
+  pi: TProductIdentifier;
+};
+
+export type TModuleMediaRel = {
+  id: number;
+  record_id: string;
+  media_id: string;
+  module_id: string;
+  table_rel: string;
+  created_at: string;
+  updated_at: string;
+  media?: TMedia;
+};
+
+export type TMedia = {
+  id: number;
+  name: string;
+  url_id: number;
+  path: string;
+  extension: string;
+  media_directory_id: number;
+  restore_media_directory_id: number;
   created_at: string;
   updated_at: string;
 };

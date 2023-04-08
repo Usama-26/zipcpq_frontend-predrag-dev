@@ -33,7 +33,7 @@ const create = async (email: string) => {
     data,
     updated_at: false,
   });
-  if (result) return await findFirst(`email='${email}'`);
+  if (result) return await findFirst(`email='${email}' AND token='${data.token}'`);
   return null;
 };
 

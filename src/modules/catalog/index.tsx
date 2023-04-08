@@ -11,19 +11,24 @@ export default function Catalog({categories}: ICatalogProps) {
       <h4 className="mt-0 pb-6">
         Choose a category to browse Conway product for that machine
       </h4>
-      <div className="h-[750px] overflow-y-scroll grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="max-h-[750px] overflow-y-scroll overflow-x-hidden grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {/* Card */}
         {categories.map(category => {
           return (
             <Link key={category.name} href={`/catalog/${category.slug}`}>
               <div className="p-2 rounded hover:bg-neutral-600/10 transition-transform duration-500 zoomUP">
                 <div className="rounded border border-[#c0c0c0]">
-                  <div className="relative h-36 bg-white rounded">
+                  <div className="relative h-36 bg-white rounded flex justify-center items-center ">
                     <Image
-                      src={'/images/products/bobst-large.png'}
+                      src={`${
+                        category.category_media
+                          ? process.env.NEXT_PUBLIC_MEDIA_BASE_PATH! +
+                            category.category_media?.media?.path
+                          : '/images/picture.png'
+                      }`}
                       width={200}
                       height={120}
-                      alt={'Product Name'}
+                      alt={category.name}
                       className={'h-full object-contain'}
                     />
                     <div className="overlay absolute flex w-full h-full top-0 left-0 items-center justify-center hover:bg-gray-100/50 transition duration-500">

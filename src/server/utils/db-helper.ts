@@ -47,14 +47,18 @@ export const makeRelationObject = (row: {[key: string]: any}) => {
   Object.keys(row).map(key => {
     const keyArr = key.split('||');
     if (keyArr.length == 2) {
-      newRow = {
-        ...newRow,
-        ...{
-          [keyArr[0]]: newRow[keyArr[0]]
-            ? {...newRow[keyArr[0]], ...{[keyArr[1]]: row[key]}}
-            : {[keyArr[1]]: row[key]},
-        },
-      };
+      if (row[`${keyArr[0]}||id`]) {
+        newRow = {
+          ...newRow,
+          ...{
+            [keyArr[0]]: newRow[keyArr[0]]
+              ? {...newRow[keyArr[0]], ...{[keyArr[1]]: row[key]}}
+              : {[keyArr[1]]: row[key]},
+          },
+        };
+      } else {
+        newRow[keyArr[0]] = null;
+      }
     } else {
       newRow[key] = row[key];
     }

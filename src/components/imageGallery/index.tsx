@@ -19,12 +19,16 @@ const ImageGallery = ({mainImage, thumbnailImages}: any) => {
   };
 
   return (
-    <div className="grid md:grid-cols-12 items-center gap-0">
+    <div className="flex md:flex-row  flex-col justify-between gap-4">
       <div className="w-full  bg-[#FAF8F8] col-span-10 flex justify-center items-center p-5">
-        <img src={currentImage} alt="" className="w-[500px] h-[400px]" />
+        <img
+          src={currentImage}
+          alt=""
+          className="md:w-[500px] md:h-[400px] w-[400px] h-[300px]"
+        />
       </div>
-      <div className="flex flex-col items-center justify-center col-span-2">
-        <button className="p-2 mb-2" onClick={previousImage}>
+      <div className="flex md:flex-col flex-row items-center justify-center ">
+        <button className="p-2  md:rotate-0 -rotate-90" onClick={previousImage}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4 transform rotate-90"
@@ -40,7 +44,7 @@ const ImageGallery = ({mainImage, thumbnailImages}: any) => {
             />
           </svg>
         </button>
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex mt-2 md:mt-0 md:flex-col flex-row items-center justify-center">
           {thumbnailImages.map((thumbnail: any, index: any) => (
             <button
               key={index}
@@ -52,11 +56,15 @@ const ImageGallery = ({mainImage, thumbnailImages}: any) => {
                 width={50}
                 height={50}
                 className="rounded-lg"
+                alt=""
               />
             </button>
           ))}
         </div>
-        <button className="p-2 mt-2" onClick={nextImage}>
+        <button
+          className="p-2  md:mt-0  md:mb-0 md:rotate-0 -rotate-90"
+          onClick={nextImage}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4 rotate-90"

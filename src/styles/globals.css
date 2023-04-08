@@ -30,6 +30,9 @@
   background: #d9d9d9;
 }
 
+@media screen and (max-width: 720px) {
+ 
+}
 
 .zoomUP:hover{
   transform: scale(1.01);
@@ -45,6 +48,15 @@
 }
 #mySplide .splide__arrow--next {
   right: -50px !important;
+}
+
+@media screen and (max-width: 720px) {
+  #mySplide .splide__arrow--prev {
+    left: -20px !important;
+  }
+  #mySplide .splide__arrow--next {
+    right: -20px !important;
+  }
 }
 
 input::-ms-reveal {

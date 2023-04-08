@@ -13,12 +13,11 @@ interface ISidebarProps {
 }
 
 const Sidebar = ({sidebarCategories, breadcrumb}: ISidebarProps) => {
-  console.log(sidebarCategories);
   const router = useRouter();
   return (
-    <aside className="max-w-sm min-w-max">
+    <aside className="max-w-sm min-w-max w-full md:w-0">
       <div className="mb-6">
-        <h5 className="text-2xl">Product Catalog</h5>
+        <h5 className="text-2xl text-center">Product Catalog</h5>
       </div>
       <div className="categories border p-3 border-[#c0c0c0] rounded-md ">
         <ul className="text-black">

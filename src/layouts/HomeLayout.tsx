@@ -4,29 +4,30 @@ import {TCategory} from '_types/types';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import {TBreadCrumb} from '_types/ui';
+import {MagnifyingGlassIcon} from '@heroicons/react/24/outline';
+import {SearchInputMobile} from '@/components/SearchInputMobile';
 
 interface IHomeLayoutProps {
   children: ReactElement;
-  sidebarCategories: TCategory[];
+  sidebarCategories?: TCategory[];
   breadcrumb: TBreadCrumb[];
-  showSideBar: boolean;
 }
 
 export default function HomeLayout({
   children,
   sidebarCategories,
   breadcrumb,
-  showSideBar,
 }: IHomeLayoutProps) {
-  console.log('breadcrumb', breadcrumb);
   return (
     <div className="font-poppins">
       <Header />
-      <div className="yellow-stripe bg-yellow-700 h-16"></div>
+      <div className="yellow-stripe bg-yellow-700 h-16">
+        <SearchInputMobile />
+      </div>
 
-      <main className="container  relative mx-auto py-5 px-20 text-zinc-700">
+      <main className="container relative mx-auto py-5 md:px-20 px-5 text-zinc-700">
         {/* Breadcrumb */}
-        <div className="text-sm ">
+        <div className="text-sm">
           <ul className="flex flex-row">
             {breadcrumb?.map((item, index) => (
               <Suspense key={item.url}>
@@ -46,14 +47,16 @@ export default function HomeLayout({
             ))}
           </ul>
         </div>
-        <div className="flex gap-7 mx-auto pb-5">
-          {showSideBar && (
+        <div
+          className="flex lg:flex-row flex-col lg:items-start items-center
+         gap-7 mx-auto pb-5 mt-4"
+        >
+          {sidebarCategories && (
             <Sidebar
               sidebarCategories={sidebarCategories}
               breadcrumb={breadcrumb}
             />
           )}
-
           {children}
         </div>
       </main>
