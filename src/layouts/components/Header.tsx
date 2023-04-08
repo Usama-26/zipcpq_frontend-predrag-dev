@@ -1,7 +1,4 @@
-/* eslint-disable prettier/prettier */
-import SearchInput from '@/components/SearchInput';
 import {Menu, Transition} from '@headlessui/react';
-import {MagnifyingGlassIcon} from '@heroicons/react/24/outline';
 import {signOut, useSession} from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -150,18 +147,11 @@ const Header = () => {
                   </Menu.Items>
                 </Transition>
               </Menu>
-<<<<<<< HEAD
               {/* <button className="inline-flex items-center gap-4"></button> */}
-=======
->>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f
             </div>
           </menu>
         </div>
       </header>
-<<<<<<< HEAD
-=======
-      {/* TODO: place mobile search input here */}
->>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f
     </>
   );
 };

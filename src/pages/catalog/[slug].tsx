@@ -12,12 +12,9 @@ import productModel from 'server/models/productModel';
 import {TBreadCrumb} from '_types/ui';
 import Typography from '@/components/Typography';
 import {ETypographyVarient} from '_enums/ui';
-<<<<<<< HEAD
 import CategoryCard from '@/components/CategoryCard';
 import {TCategory, TProduct} from '_types/types';
 import CatalogFilter from '@/modules/catalog/components/CatalogFilter';
-=======
->>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f
 import {FilterBox} from '@/components/FilterBox';
 
 export default function Index({
@@ -29,28 +26,16 @@ export default function Index({
   console.log('category', category);
 
   return (
-<<<<<<< HEAD
     <HomeLayout sidebarCategories={sidebarCategories} breadcrumb={breadcrumb}>
-=======
-    <HomeLayout
-      sidebarCategories={sidebarCategories}
-      breadcrumb={breadcrumb}
-      showSideBar={true}
-    >
->>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f
       <div className="mx-2 md:self-start">
         <div className="flex justify-between items-center mx-2 pb-4 relative">
           <Typography varient={ETypographyVarient.H2} className="font-medium">
             {category?.name}
           </Typography>
           <div className="mt-5"></div>
-<<<<<<< HEAD
           {category.children?.length > 0 && (
             <CatalogFilter category={category} />
           )}
-=======
-          <FilterBox dummyVariants={dummyVariants} />
->>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f
         </div>
         <p className="mb-4 mx-2">
           {
@@ -58,7 +43,6 @@ export default function Index({
           }
         </p>
         <div className="md:h-[720px] md:overflow-y-scroll ">
-<<<<<<< HEAD
           {products.map((product: TProduct) => (
             <Link
               key={product.id}
@@ -67,14 +51,6 @@ export default function Index({
               <ProductCardExtended product={product} />
             </Link>
           ))}
-=======
-          <Link href="/product/product_id">
-            <ProductCardExtended />
-            <ProductCardExtended />
-            <ProductCardExtended />
-            <ProductCardExtended />
-          </Link>
->>>>>>> 5da3703e780271239c2d19112f7e8d76fce4519f
         </div>
       </div>
     </HomeLayout>
