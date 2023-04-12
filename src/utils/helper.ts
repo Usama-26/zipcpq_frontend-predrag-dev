@@ -1,4 +1,4 @@
-import {TFormField} from '_types/types';
+import {TCategory, TFormField} from '_types/types';
 import * as Yup from 'yup';
 
 export const getFormFieldAndValidations = (fields: TFormField[]) => {
@@ -9,9 +9,7 @@ export const getFormFieldAndValidations = (fields: TFormField[]) => {
     // making validations
     let validationYup = Yup.string();
     if (field.visible === 'required')
-      validationYup = validationYup.required(
-        `Required!`
-      );
+      validationYup = validationYup.required(`Required!`);
     field.validation_rules?.forEach(validation => {
       if (validation.slug == 'email') validationYup = validationYup.email();
 
@@ -20,7 +18,10 @@ export const getFormFieldAndValidations = (fields: TFormField[]) => {
         formFields['password_confirmation'] = '';
         validations['password_confirmation'] = Yup.string()
           .required('Confirmation is required!')
-          .oneOf([Yup.ref(field.field.slug), null], 'Password should be match.');
+          .oneOf(
+            [Yup.ref(field.field.slug), null],
+            'Password should be match.'
+          );
       }
       // end confirmation field
     });
@@ -28,4 +29,11 @@ export const getFormFieldAndValidations = (fields: TFormField[]) => {
     // validations end
   });
   return {formFields, validations: Yup.object().shape(validations)};
+};
+
+export const isSideBarCategoryOpen = (category: TCategory, slug?: string) => {
+  console.log(category, slug);
+  if (!slug) return false;
+  if (category.slug === slug) return true;
+  return category.children?.some(cat => cat.slug === slug);
 };

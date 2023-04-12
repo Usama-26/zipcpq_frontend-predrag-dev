@@ -23,3 +23,15 @@ export function makeSerializable<T extends any>(o: T): T {
 //     sidebarCategories: await categoryModel.getCategoriesHierarchy({}),
 //   };
 // };
+
+export function getSlugFromHierarchy(record: {
+  slug: string;
+  children: any[];
+  [key: string]: any;
+}): string[] {
+  let slugArr = [record.slug];
+  record.children.forEach(item => {
+    slugArr = [...slugArr, ...getSlugFromHierarchy(item)];
+  });
+  return slugArr;
+}

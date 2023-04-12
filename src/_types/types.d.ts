@@ -169,3 +169,11 @@ export type TMedia = {
   created_at: string;
   updated_at: string;
 };
+
+export type TOrderProduct = {
+  id: number;
+  quantity: number;
+  cmiPartNumber: string;
+  description: string;
+  oemPartNumber: string;
+};

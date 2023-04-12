@@ -41,7 +41,7 @@ import {
 import * as TWEEN from '@tweenjs/tween.js';
 // import {convertArray} from 'three/src/animation/animationutils';
 import {defaultSettings, modeldata, pathModel} from 'utils/conway-machines';
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useRouter} from 'next/router';
 import {Button} from '@/components/Button';
 // function component
@@ -52,13 +52,15 @@ const ThreeDView = () => {
   const project = params?.project;
   const [loadingManager, setLoadingManager] = useState<any>();
   // Canvas
-  const [canvas, setCanvas] = useState<any>();
-  const [canvasModal, setCanvasModal] = useState<any>();
+  const canvasRef = useRef<any>(null);
+  const canvasModalRef = useRef<any>(null);
   const [expandBtn, setExpandBtn] = useState<any>();
   const [shrinkBtn, setShrinkBtn] = useState<any>();
   // const [renderer, setRenderer] = useState<any>();
 
   useEffect(() => {
+    let canvas = canvasRef.current;
+    let canvasModal = canvasModalRef.current;
     let annotation;
     let tooltiptext;
     let tooltipPartName;
@@ -68,7 +70,7 @@ const ThreeDView = () => {
     let clickedMaterial;
     let labelRenderer: any;
     let isModalOpen = false;
-    let isFullscreen = false;
+    let isFullscreen = true;
     var fov = defaultSettings['camera'][0].fov;
     var aspectRatio = defaultSettings['camera'][0].aspect;
     var near = defaultSettings['camera'][0].near;
@@ -108,10 +110,6 @@ const ThreeDView = () => {
       document.getElementById('spinner')!.style.display = 'none';
       document.getElementById('fullscreen-overlay')!.style.display = 'none';
     };
-
-    function haah() {
-      isFullscreen = true;
-    }
 
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('/static/draco/');
@@ -154,9 +152,6 @@ const ThreeDView = () => {
     //     updateAllMaterials()
     // })
 
-    // Canvas
-    let canvas: any = document.querySelector('canvas.webgl');
-    let canvasModal: any = document.querySelector('canvas.webgl2');
     // Scene
     const scene = new THREE.Scene();
     const sceneModal = new THREE.Scene();
@@ -364,26 +359,15 @@ const ThreeDView = () => {
       canvas: canvasModal as HTMLCanvasElement,
       antialias: true,
     });
-    if (isFullscreen == false) {
-      sizes.width = 833;
-      sizes.height = 659;
-      camera.aspect = sizes.width / sizes.height;
-      camera.updateProjectionMatrix();
 
-      // Update renderer
-      renderer.setSize(sizes.width, sizes.height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio * 0.95, 2));
-      // renderer.setSize(500,350)
-    } else if (isFullscreen == true) {
-      sizes.width = window.innerWidth;
-      sizes.height = window.innerHeight;
-      camera.aspect = sizes.width / sizes.height;
-      camera.updateProjectionMatrix();
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
 
-      // Update renderer
-      renderer.setSize(sizes.width, sizes.height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio * 0.95, 2));
-    }
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio * 0.95, 2));
 
     var clock: any, mixer: any;
     clock = new THREE.Clock();
@@ -415,7 +399,7 @@ const ThreeDView = () => {
     renderer.toneMappingExposure = 0.5;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    document.body.appendChild(renderer.domElement);
+    // document.body.appendChild(renderer.domElement);
     modalRenderer.physicallyCorrectLights = true;
     modalRenderer.outputEncoding = THREE.sRGBEncoding;
     modalRenderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -489,27 +473,11 @@ const ThreeDView = () => {
     // seModalt the plane to receive shadows
     planeModal.receiveShadow = true;
     planeModal.customDepthMaterial = shadowModalMaterial;
-    // plane.castShadow=true
-    // plane.customDepthMaterial = planeMaterial;
-    // plane.customDepthMaterial.color.set(255,255,255)
-    // console.log(plane.customDepthMaterial);
 
     // add the plane to the scene
     sceneModal.add(planeModal);
     const groupA: any = [];
     // scene.add(groupA)
-    var f: any = document.getElementById('full');
-    f.addEventListener('click', () => {
-      isFullscreen = true;
-      sizes.width = window.innerWidth;
-      sizes.height = window.innerHeight;
-      camera.aspect = sizes.width / sizes.height;
-      camera.updateProjectionMatrix();
-
-      // Update renderer
-      renderer.setSize(sizes.width, sizes.height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio * 0.95, 2));
-    });
 
     // var parts=[]
     let i;
@@ -609,13 +577,7 @@ const ThreeDView = () => {
         // Set the scale of the object
 
         const distance = Math.max(size.x, size.y, size.z) * 1.25;
-        // const fov = 45;
-        // const aspect = window.innerWidth / window.innerHeight;
-        // const near = -10;
-        // const far = 100;
 
-        // var helper = new THREE.BoundingBoxHelper(object.scene, 0xff0000);
-        // scene.add(helper);
         pointlight.position.set(box.min.x, box.max.y, box.min.z);
         controls.target.set(center.x, center.y, center.z);
         pointlight2.position.set(box.max.x, box.min.y, box.min.z);
@@ -752,58 +714,6 @@ const ThreeDView = () => {
      */
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
-
-    // const rectAreaLight = new THREE.RectAreaLight(0xffffff,1,2,5)
-    // rectAreaLight.rotation.set(Math.PI/2,Math.PI,0)
-    // rectAreaLight.position.set(0,0.2,0)
-    // scene.add(rectAreaLight)
-    // var geth = new RectAreaLightHelper(rectAreaLight)
-    // rectAreaLight.add(geth)
-
-    // const directionalLight = new THREE.DirectionalLight(0xffffff,1)
-    // directionalLight.shadow.mapSize.set(1024, 1024)
-    // directionalLight.shadow.camera.near = 0.1
-    // directionalLight.shadow.camera.far = 100
-
-    // directionalLight.shadow.camera.left = -5
-    // directionalLight.shadow.camera.top = 5
-    // directionalLight.shadow.camera.right =5
-    // directionalLight.shadow.camera.bottom=5
-    // directionalLight.position.set(6,1, -8)
-    // scene.add(directionalLight)
-    // directionalLight.castShadow=true
-    // directionalLight.shadow.bias=-0.0001
-
-    // const topDirectionalLight = new THREE.DirectionalLight(0xffffff, 1)
-    // topDirectionalLight.shadow.mapSize.set(1024, 1024)
-    // topDirectionalLight.shadow.camera.near = 0.1
-    // topDirectionalLight.shadow.camera.far = 100
-    // topDirectionalLight.shadow.camera.far = 100
-    // topDirectionalLight.shadow.camera.left = - 10
-    // topDirectionalLight.shadow.camera.top = 10
-    // topDirectionalLight.shadow.camera.right = 10
-    // topDirectionalLight.position.set(15, 15,-10)
-    // topDirectionalLight.castShadow=true
-    // topDirectionalLight.shadow.bias=-0.0001
-
-    // scene.add(topDirectionalLight)
-
-    // const bottomDirectionalLight = new THREE.DirectionalLight(0xffffff, 1)
-    // bottomDirectionalLight.shadow.mapSize.set(1024, 1024)
-    // bottomDirectionalLight.shadow.camera.near = 0.1;
-    // bottomDirectionalLight.shadow.camera.far = 100
-    // bottomDirectionalLight.shadow.camera.left = - 10
-    // bottomDirectionalLight.shadow.camera.top = 10
-    // bottomDirectionalLight.shadow.camera.right = 10
-    // bottomDirectionalLight.position.set(-6, 20,8)
-    // bottomDirectionalLight.castShadow=true
-    // bottomDirectionalLight.shadow.bias=-0.0001
-    // scene.add(bottomDirectionalLight)
-    // const bottomHelper = new THREE.DirectionalLightHelper(bottomDirectionalLight, 5);
-    // scene.add(bottomHelper);
-
-    // const helper = new THREE.DirectionalLightHelper(directionalLight, 5);
-    // scene.add(helper);
 
     var zoomend;
     zoomend = 4;
@@ -1044,35 +954,7 @@ const ThreeDView = () => {
      * Sizes
     
      */
-    // if (isFullscreen == true) {
-    //   window.addEventListener('resize', () => {
-    //     // Update sizes
-    //     sizes.width = window.innerWidth;
-    //     sizes.height = window.innerHeight;
 
-    //     // Update camera
-    //     camera.aspect = sizes.width / sizes.height;
-    //     camera.updateProjectionMatrix();
-
-    //     // Update renderer
-    //     renderer.setSize(sizes.width, sizes.height);
-    //     renderer.setPixelRatio(Math.min(window.devicePixelRatio * 0.95, 2));
-    //   });
-    // } else if (isFullscreen == false) {
-    //   window.addEventListener('resize', () => {
-    //     // Update sizes
-    //     sizes.width = 833;
-    //     sizes.height = 659;
-
-    //     // Update camera
-    //     camera.aspect = sizes.width / sizes.height;
-    //     camera.updateProjectionMatrix();
-
-    //     // Update renderer
-    //     renderer.setSize(sizes.width, sizes.height);
-    //     renderer.setPixelRatio(Math.min(window.devicePixelRatio * 0.95, 2));
-    //   });
-    // }
     window.addEventListener('dblclick', () => {});
 
     window.addEventListener('mousedown', event => {
@@ -1127,11 +1009,7 @@ const ThreeDView = () => {
     controls.maxDistance = 4.4;
     controls.enableDamping = true;
     controls.addEventListener('start', () => {});
-    // controls.addEventListener('change',()=>{
-    //     isControlling=true
-    //     ////("change");
 
-    //     })
     controls.addEventListener('end', ev => {
       intersects = raycaster.intersectObjects(loadedobject.children);
       // clickedMesh = null
@@ -1178,19 +1056,9 @@ const ThreeDView = () => {
               intersects[0].object.material.name
           ) {
             setTimeout(() => {}, 1000);
-            // text = "Item number:" + modeldata['conway-machines'][n]['item-no']
-            // var text1 = "Part number:" + modeldata['conway-machines'][n]['part-number']
-            // var text2 = "Description:" + modeldata['conway-machines'][n].description
-            // document.getElementById("partNo").innerHTML = text1;
-            // document.getElementById("desc").innerHTML = text2;
-            // document.getElementById("itemNo").innerHTML = text;
 
             currentIntersect == true;
-            // ////(scene.getObjectByName(modeldata['conway-machines'][n].rgb + 0));
-            // scene.getObjectByName(modeldata['conway-machines'][n].rgb + 0).material.color.set('#ffffff')
-            //     if(scene.children.material instanceof MeshStandardMaterial){
-            // scene.children.material.emissive.set('#ffffff')
-            //     }
+
             // loade
             modeldata['conway-machines'].forEach(element => {
               // ////(element.description);
@@ -1203,49 +1071,8 @@ const ThreeDView = () => {
             const box1 = new THREE.Box3().setFromObject(intersects[0].object);
             const boxSize1 = box1.getSize(new THREE.Vector3()).length();
             const boxCenter1 = box1.getCenter(new THREE.Vector3());
-            // intersects[0].object.material.emissive.set('#00ff00')
-            // intersects[0].object.material.opacity = 1
-            // intersects[0].object.visible = true
+
             document.body!.style.cursor = 'pointer';
-
-            // text = modeldata['conway-machines'][n]['item-no'] + '<br>' + modeldata['conway-machines'][n]['part-number'] + '<br>' + modeldata['conway-machines'][n].description
-            // earthDiv.innerHTML = text;
-            // earthLabel.position.set(box1.max.x, box1.max.y, box1.max.z);
-            // scene.add(buttonLabel);
-            // var intersectPoint=intersects[0].point
-            //         buttonDiv!.style.display="block"
-            //         if(intersectPoint.z<0){
-            //     buttonLabel.position.set(boxCenter1.x,boxCenter1.y,box1.min.z)
-
-            //         }
-            //          if(intersectPoint.z>0){
-            //     buttonLabel.position.set(boxCenter1.x,boxCenter1.y,box1.max.z)
-
-            //         }x
-
-            // earthLabel.layers.set(0);
-            //   firstIntersectedObject = intersects[0].object;
-            //     firstIntersectPoint = intersects[0].point;
-            //     buttonLabel.position.set(firstIntersectPoint.x, firstIntersectPoint.y, firstIntersectPoint.z);
-            // buttonLabel.visible = true;
-            // handle clicking on the object
-            //
-            // scene.getObjectByName(modeldata['conway-machines'][n].rgb + 0).material.emissive.set('#FFCB06')
-            // scene.traverse(function (child) {
-            //     if (child.material instanceof MeshStandardMaterial) {
-            //         if(child.material.name == modeldata['conway-machines'][n].rgb){
-            //             ////("asoijasjoiajso");
-            //             child.material.emissive.set('#FFCB06')
-            //         }
-            //         else{
-            //             child.material.emissive.set('#000000')
-
-            //         }
-            // }})
-            // for(let x=0;x<modeldata['conway-machines'][n].group.length;x++){
-            //     ////(modeldata['conway-machines'][n].group[x].material);
-            //     // modeldata['conway-machines'][n].group[x].material.emissive.set('#FFCB06')
-            // }
           } else {
             if (intersects[0] != null) {
               if (!md.includes(intersects[0].object.material.name)) {
@@ -1275,10 +1102,8 @@ const ThreeDView = () => {
                   scene.add(earthLabel);
                 }
               });
-              // scene.getObjectByName(modeldata['conway-machines'][n].rgb + 0).material.emissive.set('#ffffff')
-              // annotation!.style.display = "block"
+              
             } else {
-              // scene.getObjectByName(modeldata['conway-machines'][n].rgb + 0).material.emissive.set('#000000')
 
               loadedobject.traverse(function (child: any) {
                 if (child.material instanceof MeshStandardMaterial) {
@@ -1310,27 +1135,12 @@ const ThreeDView = () => {
               intersects[0].object.material.name
           ) {
             setTimeout(() => {}, 1000);
-            // text = "Item number:" + modeldata['conway-machines'][n]['item-no']
-            // var text1 = "Part number:" + modeldata['conway-machines'][n]['part-number']
-            // var text2 = "Description:" + modeldata['conway-machines'][n].description
-            // document.getElementById("partNo").innerHTML = text1;
-            // document.getElementById("desc").innerHTML = text2;
-            // document.getElementById("itemNo").innerHTML = text;
 
             currentIntersect == true;
-            // ////(scene.getObjectByName(modeldata['conway-machines'][n].rgb + 0));
-            // scene.getObjectByName(modeldata['conway-machines'][n].rgb + 0).material.color.set('#ffffff')
-            //     if(scene.children.material instanceof MeshStandardMaterial){
-            // scene.children.material.emissive.set('#ffffff')
-            //     }
-            // loade
+
             modeldata['conway-machines'].forEach(element => {
               // ////(element.description);
             });
-
-            // tooltipPartName = document.getElementById("name").innerHTML = modeldata['conway-machines'][1]['part-number']
-
-            // tooltiptext = document.getElementById("description").innerHTML = modeldata['conway-machines'][1].description
 
             const box1 = new THREE.Box3().setFromObject(intersects[0].object);
             const boxSize1 = box1.getSize(new THREE.Vector3()).length();
@@ -1338,46 +1148,6 @@ const ThreeDView = () => {
             intersects[0].object.material.emissive.set('#ff0000');
 
             document.body!.style.cursor = 'pointer';
-            // intersects[0].object.material.opacity = 1
-            // intersects[0].object.visible = true
-            // text = modeldata['conway-machines'][n]['item-no'] + '<br>' + modeldata['conway-machines'][n]['part-number'] + '<br>' + modeldata['conway-machines'][n].description
-            // earthDiv.innerHTML = text;
-            // earthLabel.position.set(box1.max.x, box1.max.y, box1.max.z);
-            // scene.add(buttonLabel);
-            // var intersectPoint=intersects[0].point
-            //         buttonDiv!.style.display="block"
-            //         if(intersectPoint.z<0){
-            //     buttonLabel.position.set(boxCenter1.x,boxCenter1.y,box1.min.z)
-
-            //         }
-            //          if(intersectPoint.z>0){
-            //     buttonLabel.position.set(boxCenter1.x,boxCenter1.y,box1.max.z)
-
-            //         }x
-
-            // earthLabel.layers.set(0);
-            //   firstIntersectedObject = intersects[0].object;
-            //     firstIntersectPoint = intersects[0].point;
-            //     buttonLabel.position.set(firstIntersectPoint.x, firstIntersectPoint.y, firstIntersectPoint.z);
-            // buttonLabel.visible = true;
-            // handle clicking on the object
-            //
-            // scene.getObjectByName(modeldata['conway-machines'][n].rgb + 0).material.emissive.set('#FFCB06')
-            // scene.traverse(function (child) {
-            //     if (child.material instanceof MeshStandardMaterial) {
-            //         if(child.material.name == modeldata['conway-machines'][n].rgb){
-            //             ////("asoijasjoiajso");
-            //             child.material.emissive.set('#FFCB06')
-            //         }
-            //         else{
-            //             child.material.emissive.set('#000000')
-
-            //         }
-            // }})
-            // for(let x=0;x<modeldata['conway-machines'][n].group.length;x++){
-            //     ////(modeldata['conway-machines'][n].group[x].material);
-            //     // modeldata['conway-machines'][n].group[x].material.emissive.set('#FFCB06')
-            // }
           } else {
             if (intersects[0] != null) {
               if (!md.includes(intersects[0].object.material.name)) {
@@ -1430,18 +1200,7 @@ const ThreeDView = () => {
         }
       }
     }
-
-    // const axesHelper = new THREE.AxesHelper(5);
-    // scene.add(axesHelper);
-    // var n;
-    function render() {
-      renderer.render(scene, camera);
-    }
-    // function AutoRotate() {
-
-    //     controls.autoRotate = true;
-    //     controls.autoRotateSpeed = 4;
-    // }
+   
     const tick = () => {
       // Update controls
       controls.update();
@@ -1462,17 +1221,10 @@ const ThreeDView = () => {
 
       hex = modeldata['conway-machines'][0].hex;
       const objectsToTest = groupA;
-      // ////(objectsToTest);
-      // for(let n=0;n<modeldata['conway-machines'].length;n++){
-      // intersects = raycaster.intersectObjects(modeldata['conway-machines'][n].group)
-
-      // }
-      let intersects;
+     
       hover();
       hoverSmall();
     };
-
-    // scene.getObjectByName(modeldata['conway-machines'][n].rgb + 0).material.emissive.set('#00ff00')
 
     tick();
 
@@ -1524,17 +1276,6 @@ const ThreeDView = () => {
         <div className="selectModel"></div>
       </div>
 
-      {/* <!-- <div className="popup-container">
-  <div className="popup-content">
-    <div className="selectModel"></div>
-    <div className="scroll"></div>
-    <div className="pan"></div>
-
-
-    <button className="close-btn">&times;</button>
-  </div>
-</div> --> */}
-
       <div id="mySidebar" className="sidebar" style={{alignItems: 'center'}}>
         <div
           style={{
@@ -1580,7 +1321,7 @@ const ThreeDView = () => {
             ×
           </a>
         </div>
-        <canvas className="webgl2" id="canvas2"></canvas>
+        <canvas ref={canvasModalRef} className="webgl2" id="canvas2"></canvas>
         <br />
         <br />
         <div id="textDiv" style={{position: 'relative'}}>
@@ -1671,72 +1412,18 @@ const ThreeDView = () => {
           </button>
         </div>
       </div>
-      <canvas className="webgl" id="canvas1"></canvas>
+      <div>
+        <canvas
+          ref={canvasRef}
+          className="webgl relative"
+          id="canvas1"
+        ></canvas>
+      </div>
       <div id="fullscreen-overlay">
         <p className="loadingtypo" id="typo">
           Loading...
         </p>
         <div id="spinner"></div>
-      </div>
-      <Button id="full" className="full">
-        Full screen
-      </Button>
-
-      <div id="modal" className="modal">
-        <div className="modal-content">
-          <div className="modal-header">
-            <span className="close">&times;</span>
-            <h2 id="modal_header">Conway Machines</h2>
-          </div>
-          <div className="modal-body">
-            <canvas className="webgl2" id="canvas2"></canvas>
-            <div>
-              <label id="partNo" style={{marginLeft: '1rem'}}></label>
-              <br />
-              <br />
-              <label id="desc" style={{marginLeft: '1rem'}}></label>
-              <br />
-              <br />
-              <label id="itemNo" style={{marginLeft: '1rem'}}></label>
-              <br />
-              <br />
-              <label style={{marginLeft: '1rem'}}>Amount:</label>{' '}
-              <button
-                id="decrement"
-                style={{
-                  width: '1.5rem',
-                  height: '1.5rem',
-                  marginLeft: '1rem',
-                  backgroundColor: '#f1e204',
-                }}
-              >
-                -
-              </button>
-              <input
-                id="number"
-                defaultValue="0"
-                style={{width: '1.5rem', height: '1.5rem', textAlign: 'center'}}
-              />
-              <button
-                id="increment"
-                style={{
-                  width: '1.5rem',
-                  height: '1.5rem',
-                  marginLeft: '.2rem',
-                  backgroundColor: '#f1e204',
-                }}
-              >
-                +
-              </button>
-              <br />
-              <br />
-              <button
-                className="addCart"
-                style={{width: '3rem', height: '3rem'}}
-              ></button>
-            </div>
-          </div>
-        </div>
       </div>
     </>
   );

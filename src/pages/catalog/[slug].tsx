@@ -15,6 +15,8 @@ import {ETypographyVarient} from '_enums/ui';
 import CategoryCard from '@/components/CategoryCard';
 import {TCategory, TProduct} from '_types/types';
 import CatalogFilter from '@/modules/catalog/components/CatalogFilter';
+import {getSlugFromHierarchy} from 'server/utils/helper';
+import {ParsedUrlQueryInput} from 'querystring';
 import {FilterBox} from '@/components/FilterBox';
 
 export default function Index({
@@ -58,7 +60,8 @@ export default function Index({
 }
 
 export const getServerSideProps: GetServerSideProps = async ({query, req}) => {
-  const {slug} = query;
+  console.log(query);
+  const {slug, sub_category} = query;
   if (!(await setLicenseDB(req.headers.host))) {
     return {
       notFound: true,
@@ -86,16 +89,22 @@ export const getServerSideProps: GetServerSideProps = async ({query, req}) => {
     url: '/catalog/' + category.slug,
     active: true,
   });
-
+  console.log('sub_category', sub_category);
   const products = await productModel.find({
     withJoins: ['created', 'pt', 'product_identifiers', 'product_medias'],
-    where: {category_slugs: [slug as string]},
+    where: {
+      category_slugs: sub_category
+        ? Array.isArray(sub_category)
+          ? sub_category
+          : [sub_category]
+        : getSlugFromHierarchy(category),
+    },
   });
 
   return {
     props: {
       products,
-      sidebarCategories: await categoryModel.getCategoriesHierarchy({}),
+      sidebarCategories: await categoryModel.getCategoriesHierarchy(),
       breadcrumb,
       category,
     },

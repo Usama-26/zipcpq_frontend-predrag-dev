@@ -54,12 +54,12 @@ const Login = () => {
       username: values.username,
       password: values.password,
       redirect: false,
-      callbackUrl: '/me',
+      callbackUrl: '/',
     });
     console.log(res);
     if (!res?.ok) {
       toast.error(
-        'Unable to login, please re-check your credentials or verify your email if you have not'
+        'Unable to login, please re-check your credentials or verify your email if you have not.'
       );
     } else {
       toast.success('Login successful');

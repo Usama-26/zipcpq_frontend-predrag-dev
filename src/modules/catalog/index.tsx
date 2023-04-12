@@ -24,7 +24,7 @@ export default function Catalog({categories}: ICatalogProps) {
                         category.category_media
                           ? process.env.NEXT_PUBLIC_MEDIA_BASE_PATH! +
                             category.category_media?.media?.path
-                          : '/images/picture.png'
+                          : '/images/placeholder.png'
                       }`}
                       width={200}
                       height={120}

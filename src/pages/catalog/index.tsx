@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
         where: {parent_id: 1},
         withJoins: ['category_media'],
       }),
-      sidebarCategories: await categoryModel.getCategoriesHierarchy({}),
+      sidebarCategories: await categoryModel.getCategoriesHierarchy(),
       breadcrumb,
     },
   };

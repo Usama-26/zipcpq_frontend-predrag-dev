@@ -73,7 +73,12 @@ const findFirst = async ({
 
   if (result) {
     if (withJoins.includes('children')) {
-      result['children'] = await getCategoriesHierarchy(result.id);
+      result['children'] = await getCategoriesHierarchy(result.id, [
+        'id',
+        'name',
+        'slug',
+        'parent_id',
+      ]);
     }
   }
 
@@ -81,14 +86,16 @@ const findFirst = async ({
 };
 
 const find = async ({
+  selectCols,
   where,
   withJoins = [],
 }: {
+  selectCols?: string[];
   where?: {parent_id?: number; id_not?: number[]};
   withJoins?: string[];
 }): Promise<TCategory[] | []> => {
   const fields = getSelectFieldsString(tableName, {
-    cols: columns,
+    cols: selectCols || columns,
     joins,
     withJoins,
   });
@@ -98,8 +105,8 @@ const find = async ({
   if (where?.parent_id)
     whereCond += ` AND ${tableName}.parent_id=${where?.parent_id}`;
 
-  // if (where?.id_not)
-  //   whereCond += ` AND ${tableName}.id NOT IN (${where?.parent_id})`;
+  if (where?.id_not)
+    whereCond += ` AND ${tableName}.id NOT IN (${where.id_not.join(',')})`;
 
   let query = `select ${fields} from ${tableName} ${joinsQuery} ${whereCond}`;
 
@@ -112,7 +119,10 @@ const find = async ({
   return await Promise.all(
     rows.map(async row => {
       if (withJoins.includes('category_media')) {
-        const medias = await getMedias(row);
+        const medias = await moduleMediaRelModel.find({
+          where: {record_id: row.id, table_rel: tableName},
+          withJoins: ['media'],
+        });
         row['category_media'] = medias.length > 0 ? medias[0] : null;
       }
       return row;
@@ -121,14 +131,20 @@ const find = async ({
 };
 
 const getCategoriesHierarchy = async (
-  categoryId?: number
+  categoryId?: number,
+  selectCols?: string[]
 ): Promise<TCategory[]> => {
   const records = await find({
-    where: categoryId ? {id_not: [categoryId]} : {},
+    selectCols,
+    where: categoryId ? {id_not: [categoryId]} : undefined,
   });
   // let hierarchyRecords: TCategory[] = [];
   return records
-    .filter(item => item.parent_id === 1)
+    .filter(
+      item =>
+        (!categoryId && item.parent_id === 1) ||
+        (categoryId && item.parent_id === categoryId)
+    )
     .map(item => {
       return {
         ...item,
@@ -164,13 +180,15 @@ const categoryModel: TModel & {
     withJoins?: string[];
   }) => Promise<any>;
   find: ({
+    selectCols,
     where,
     withJoins = [],
   }: {
+    selectCols?: string[];
     where?: {};
     withJoins?: string[];
   }) => Promise<TCategory[] | []>;
-  getCategoriesHierarchy: ({}: any) => Promise<TCategory[] | []>;
+  getCategoriesHierarchy: (categoryId?: number) => Promise<TCategory[]>;
 } = {
   tableName,
   columns,
@@ -179,9 +197,3 @@ const categoryModel: TModel & {
   getCategoriesHierarchy,
 };
 export default categoryModel;
-
-const getMedias = async (category: TCategory) =>
-  await moduleMediaRelModel.find({
-    where: {record_id: category.id, table_rel: tableName},
-    withJoins: ['media'],
-  });

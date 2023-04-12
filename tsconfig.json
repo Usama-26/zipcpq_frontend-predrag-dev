@@ -20,6 +20,7 @@
       "@/layouts/*": ["layouts/*"],
       "@/lib/*": ["lib/*"],
       "@/modules/*": ["modules/*"],
+      "@/store/*": ["store/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "global.d.ts", "src/components/imageGallery/index.tsx"],

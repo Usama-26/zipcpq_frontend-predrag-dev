@@ -1,12 +1,12 @@
-import EmptyLayout from '@/layouts/EmptyLayout';
+import AuthLayout from '@/layouts/AuthLayout';
 import dynamic from 'next/dynamic';
 const Login = dynamic(() => import('@/modules/auth/Login'), {});
 
 const Index = () => {
   return (
-    <EmptyLayout>
+    <AuthLayout>
       <Login />
-    </EmptyLayout>
+    </AuthLayout>
   );
 };
 

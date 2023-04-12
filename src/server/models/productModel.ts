@@ -156,28 +156,7 @@ const find = async ({
     withJoins,
   });
   const joinsQuery = getJoinsString(joins, withJoins);
-  const whereCond: string[] = [];
-  if (where) {
-    if (where.category_ids) {
-      whereCond.push(
-        `${tableName}.id IN (SELECT product_id from product_categories_rel where category_id IN (${where.category_ids.join(
-          ','
-        )})) `
-      );
-    }
-    if (where.category_slugs) {
-      whereCond.push(
-        `${tableName}.id IN (SELECT product_id from product_categories_rel where category_id IN (SELECT id from categories where slug IN ('${where.category_slugs.join(
-          ','
-        )}'))) `
-      );
-    }
-    if (where.from_related_product) {
-      whereCond.push(
-        `${tableName}.id IN (SELECT rel_product_id from product_related where product_id = ${where.from_related_product})`
-      );
-    }
-  }
+  const whereCond: string[] = where ? applyWhere(where) : [];
 
   const query = `select ${fields} from ${tableName} ${joinsQuery} ${
     whereCond.length > 0 ? 'where ' + whereCond.join(' AND ') : ''
@@ -235,6 +214,34 @@ const productModel: TModel & {
   find,
 };
 export default productModel;
+
+const applyWhere = (where: {
+  category_ids?: number[];
+  category_slugs?: string[];
+  from_related_product?: number;
+}) => {
+  const whereCond: string[] = [];
+  if (where.category_ids) {
+    whereCond.push(
+      `${tableName}.id IN (SELECT product_id from product_categories_rel where category_id IN (${where.category_ids.join(
+        ','
+      )})) `
+    );
+  }
+  if (where.category_slugs) {
+    whereCond.push(
+      `${tableName}.id IN (SELECT product_id from product_categories_rel where category_id IN (SELECT id from categories where slug IN ('${where.category_slugs.join(
+        "','"
+      )}'))) `
+    );
+  }
+  if (where.from_related_product) {
+    whereCond.push(
+      `${tableName}.id IN (SELECT rel_product_id from product_related where product_id = ${where.from_related_product})`
+    );
+  }
+  return whereCond;
+};
 
 const getProductIdentifiers = async (product: TProduct) =>
   await productIdentifierRelModel.find({

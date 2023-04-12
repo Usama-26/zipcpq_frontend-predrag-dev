@@ -1,5 +1,10 @@
-/* eslint-disable prettier/prettier */
-export default function SearchInput({isSearchBarVisible}) {
+import React from 'react';
+
+export default function SearchInput({
+  isSearchBarVisible,
+}: {
+  isSearchBarVisible: boolean;
+}) {
   return (
     <input
       id="search"

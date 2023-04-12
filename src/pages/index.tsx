@@ -13,11 +13,7 @@ export default function Home({
   breadcrumb,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <HomeLayout
-      sidebarCategories={sidebarCategories}
-      breadcrumb={breadcrumb}
-      showSideBar={true}
-    >
+    <HomeLayout sidebarCategories={sidebarCategories} breadcrumb={breadcrumb}>
       <Catalog categories={categories} />
     </HomeLayout>
   );
@@ -42,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
         where: {parent_id: 1},
         withJoins: ['category_media'],
       }),
-      sidebarCategories: await categoryModel.getCategoriesHierarchy({}),
+      sidebarCategories: await categoryModel.getCategoriesHierarchy(),
       breadcrumb,
     },
   };

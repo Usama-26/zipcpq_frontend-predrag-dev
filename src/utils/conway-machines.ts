@@ -215,7 +215,7 @@ export const defaultSettings = {
 export const pathModel = {
   path: [
     {
-      path: 'static/models/FlightHelmet/glTF/',
+      path: '/static/models/FlightHelmet/glTF/',
       model: 'conway_materijali (1)',
       type: '.glb',
     },

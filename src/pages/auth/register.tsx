@@ -7,7 +7,7 @@ import {GetServerSideProps, InferGetServerSidePropsType} from 'next';
 import React, {useEffect, useState} from 'react';
 import {VIEWS} from '_constant';
 import {TCustomForm, TFormField, TView} from '_types/types';
-import EmptyLayout from '../../layouts/EmptyLayout';
+import AuthLayout from '../../layouts/AuthLayout';
 import dynamic from 'next/dynamic';
 
 const Register = dynamic(() => import('@/modules/auth/Register'), {});
@@ -38,9 +38,9 @@ const Index = ({
   }, [view]);
 
   return (
-    <EmptyLayout>
+    <AuthLayout>
       {loader ? <OverlayLoader /> : <Register view={view} fields={fields} />}
-    </EmptyLayout>
+    </AuthLayout>
   );
 };
 

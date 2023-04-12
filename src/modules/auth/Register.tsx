@@ -205,8 +205,9 @@ const Register = ({view, fields}: RegisterProps) => {
                   type="submit"
                   size="lg"
                   className="mt-3 w-full mx-auto bg-zinc-700  hover:bg-zinc-900 mb-4"
+                  disabled={isSubmitting}
                 >
-                  Register
+                  {isSubmitting ? 'Loading...' : 'Register'}
                 </Button>
                 <p className="text-center text-gray-500">
                   Already have login and password{' '}

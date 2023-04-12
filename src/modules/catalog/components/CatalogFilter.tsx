@@ -9,11 +9,20 @@ interface ICatalogFilterProps {
 }
 const CatalogFilter = ({category}: ICatalogFilterProps) => {
   const router = useRouter();
-  const [checkedSlugs, setCheckedSlugs] = useState<string[]>([]);
+  const [checkedSlugs, setCheckedSlugs] = useState<string[]>(
+    Array.isArray(router.query.sub_category)
+      ? router.query.sub_category
+      : router.query.sub_category
+      ? [router.query.sub_category]
+      : []
+  );
 
   const handleFilter = () => {
     console.log(checkedSlugs);
-    // router.push('/auth/login');
+    router.push({
+      pathname: `/catalog/${category.slug}`,
+      query: {sub_category: checkedSlugs},
+    });
   };
 
   const handleCheckBoxChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +76,10 @@ const CatalogFilter = ({category}: ICatalogFilterProps) => {
                           onChange={handleCheckBoxChange}
                           value={variant.slug}
                           // checked={checkedSlugs.includes(variant.slug)}
+                          defaultChecked={
+                            router.query.sub_category === variant.slug ||
+                            router.query.sub_category?.includes(variant.slug)
+                          }
                           id={variant.slug}
                         />
                         <span className="font-medium">{variant.name}</span>
@@ -74,7 +87,10 @@ const CatalogFilter = ({category}: ICatalogFilterProps) => {
                     );
                   })}
                 </div>
-                <button className="px-10 float-right py-2 bg-[#5B5B5B] rounded-lg font-medium border border-transparent text-white hover:text-black text-lg hover:border-black hover:bg-white transition duration-200 -translate-y-4">
+                <button
+                  onClick={handleFilter}
+                  className="px-10 float-right py-2 bg-[#5B5B5B] rounded-lg font-medium border border-transparent text-white hover:text-black text-lg hover:border-black hover:bg-white transition duration-200 -translate-y-4"
+                >
                   Filter
                 </button>
               </Popover.Panel>

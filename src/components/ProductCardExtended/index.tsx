@@ -28,7 +28,7 @@ export default function ProductCardExtended({
               <span>Compare to BSA04120000FM</span>
             </div>
             <p className="mb-8 md:text-base text-sm font-poppins">
-              {product.description}
+              {product.short_description}
             </p>
             <div className="flex gap-3 font-poppins">
               <button className="px-5 py-1 bg-[#5B5B5B] rounded-lg font-medium border border-transparent text-white hover:text-black sm:text-base text-sm hover:border-black hover:bg-white transition duration-200 ">
@@ -40,19 +40,19 @@ export default function ProductCardExtended({
             </div>
           </div>
           <div className="md:basis-2/5 basis-full md:order-2 order-1 md:py-0 py-4">
-            <Image
-              // src={`/images/products/${'bobst-large'}.png`}
-              src={`${
-                product.product_medias && product.product_medias.length > 0
-                  ? process.env.NEXT_PUBLIC_MEDIA_BASE_PATH! +
-                    product.product_medias[0].media?.path
-                  : `/images/products/${'bobst-large'}.png`
-              }`}
-              alt={'Product Image'}
-              width={350}
-              height={200}
-              className={'h-full object-contain'}
-            />
+            <div className="w-[300px] h-[172px] relative">
+              <Image
+                src={`${
+                  product.product_medias && product.product_medias.length > 0
+                    ? process.env.NEXT_PUBLIC_MEDIA_BASE_PATH! +
+                      product.product_medias[0].media?.path
+                    : '/images/placeholder.png'
+                }`}
+                fill
+                alt={'Product Name'}
+                // className={'h-full object-contain'}
+              />
+            </div>
           </div>
         </div>
       </div>
