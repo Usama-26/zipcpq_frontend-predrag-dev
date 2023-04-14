@@ -16,7 +16,7 @@ interface ISidebarProps {
 }
 
 const SidebarAccounts = ({breadcrumb}: ISidebarProps) => {
-  const {query} = useRouter();
+  const {query, pathname} = useRouter();
   const [showSideBar, setShowSideBar] = useState(true);
   useEffect(() => {
     setShowSideBar(false);
@@ -24,6 +24,8 @@ const SidebarAccounts = ({breadcrumb}: ISidebarProps) => {
       setShowSideBar(true);
     }, 1);
   }, [query.slug]);
+
+  console.log(pathname);
 
   return (
     <aside className="max-w-sm min-w-[256px] h-[700px]">
@@ -34,21 +36,22 @@ const SidebarAccounts = ({breadcrumb}: ISidebarProps) => {
       <div className="categories border p-3 border-[#c0c0c0] rounded-md flex flex-col h-[550px] justify-between">
         <div>
           <div
-            className={
-              'flex justify-between items-center rounded-md hover:bg-yellow-700 '
-            }
+            className={`flex justify-between items-center pr-1 rounded-md hover:bg-yellow-700 hover:text-black ${
+              pathname === '/accounts/' ||
+              (pathname === '/accounts/general' && 'bg-yellow-700 text-black')
+            }`}
           >
             <Link href={'/accounts/general'} className={'w-full p-2'}>
               <span>Account Details</span>
             </Link>
 
-            <ChevronRightIcon className={'w-4 '} />
+            <ChevronRightIcon className={'w-4'} />
           </div>
 
           <div
-            className={
-              'flex justify-between items-center rounded-md hover:bg-yellow-700 '
-            }
+            className={`flex justify-between items-center pr-1 rounded-md hover:bg-yellow-700 hover:text-black ${
+              pathname === '/accounts/passwords' && 'bg-yellow-700 text-black'
+            }`}
           >
             <Link href={'/accounts/passwords'} className={'w-full p-2'}>
               <span>Passwords</span>
@@ -58,7 +61,11 @@ const SidebarAccounts = ({breadcrumb}: ISidebarProps) => {
           </div>
         </div>
 
-        <div className="flex justify-between items-center rounded-md hover:bg-yellow-700 ">
+        <div
+          className={`flex justify-between items-center pr-1 rounded-md hover:bg-yellow-700 hover:text-black ${
+            pathname === '/accounts/deactivate' && 'bg-yellow-700 text-black'
+          }`}
+        >
           <Link href={'/accounts/deactivate'} className={'w-full p-2'}>
             <span>Deactivate Account</span>
           </Link>
