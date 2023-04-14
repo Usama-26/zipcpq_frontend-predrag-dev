@@ -12,17 +12,14 @@ const defaultConfig = {
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASS || '',
   waitForConnections: true,
-  connectionLimit: 10,
-  maxIdle: 5, // max idle connections, the default value is the same as `connectionLimit`
-  idleTimeout: 2000,
-  queueLimit: 0,
+  maxIdle: 10,
+  connectTimeout: 60000,
 };
 
 const db = mysql.createPool({
   ...defaultConfig,
   ...{database: process.env.DB_DATABASE},
 });
-
 let licenseDb: any;
 
 const joinFieldSeprator = '||';
