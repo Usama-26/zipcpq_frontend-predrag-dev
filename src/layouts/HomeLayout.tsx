@@ -10,7 +10,7 @@ import {SearchInputMobile} from '@/components/SearchInputMobile';
 interface IHomeLayoutProps {
   children: ReactElement;
   sidebarCategories?: TCategory[];
-  breadcrumb: TBreadCrumb[];
+  breadcrumb?: TBreadCrumb[];
 }
 
 export default function HomeLayout({

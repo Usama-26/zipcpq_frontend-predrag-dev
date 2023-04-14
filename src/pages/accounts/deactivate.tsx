@@ -1,8 +1,14 @@
 import {Button} from '@/components/Button';
+import {TextInput} from '@/components/Form';
+import {RHFTextField} from '@/components/HookForm';
+import Modal from '@/components/Modal';
 import HomeLayout from '@/layouts/HomeLayout';
 import SidebarAccounts from '@/layouts/components/SidebarAccounts';
+import Image from 'next/image';
+import {useState} from 'react';
 
 export default function DeactivateAccount() {
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   return (
     <HomeLayout>
       <>
@@ -50,7 +56,13 @@ export default function DeactivateAccount() {
               </p>
             </div>
             <div className="text-right mt-24">
-              <Button className="rounded-md mr-2 bg-gray-50 shadow-none text-[#717284] text-sm border border-[#c0c0c0] hover:text-white hover:!bg-zinc-700">
+              <Button
+                onClick={e => {
+                  e.preventDefault();
+                  setIsConfirmModalOpen(true);
+                }}
+                className="rounded-md mr-2 bg-gray-50 shadow-none text-[#717284] text-sm border border-[#c0c0c0] hover:text-white hover:!bg-zinc-700"
+              >
                 Delete Account
               </Button>
               <Button className="rounded-md shadow-none bg-yellow-700 text-black text-sm hover:text-white hover:!bg-zinc-700">
@@ -59,6 +71,36 @@ export default function DeactivateAccount() {
             </div>
           </div>
         </div>
+        <Modal
+          header="To deactivate, enter your password"
+          open={isConfirmModalOpen}
+          setOpen={setIsConfirmModalOpen}
+          footer={
+            <div className="self-end">
+              <Button className="rounded-md shadow-none bg-yellow-700 text-black hover:!text-white hover:!bg-zinc-700">
+                Deactivate Account
+              </Button>
+            </div>
+          }
+        >
+          <label htmlFor="inputPassword" className="relative block">
+            <span className={'absolute left-2 top-2.5 z-10'}>
+              <Image
+                src={'/icons/lock-closed.svg'}
+                width={15}
+                height={19}
+                alt="Password icon"
+              />
+            </span>
+            <TextInput
+              id="inputPassword"
+              name="password"
+              type="password"
+              placeholder="Password"
+              className={'text-zinc-700 py-2 w-full px-8 bg-zinc-100'}
+            />
+          </label>
+        </Modal>
       </>
     </HomeLayout>
   );

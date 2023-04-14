@@ -1,8 +1,10 @@
 import {Button} from '@/components/Button';
 import {SelectInput, TextInput} from '@/components/Form';
+import Modal from '@/components/Modal';
 
 import HomeLayout from '@/layouts/HomeLayout';
 import SidebarAccounts from '@/layouts/components/SidebarAccounts';
+import {useState} from 'react';
 
 const countryOptions = [
   {
@@ -20,6 +22,7 @@ const countryOptions = [
 ];
 
 export default function Accounts() {
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   return (
     <HomeLayout>
       <>
@@ -150,7 +153,13 @@ export default function Accounts() {
                   Required Fields*
                 </span>
                 <div className="self-end">
-                  <Button className="rounded-md mr-2 bg-gray-50 shadow-none text-[#717284] border border-[#c0c0c0] hover:text-white hover:!bg-zinc-700">
+                  <Button
+                    onClick={e => {
+                      e.preventDefault();
+                      setIsConfirmModalOpen(true);
+                    }}
+                    className="rounded-md mr-2 bg-gray-50 shadow-none text-[#717284] border border-[#c0c0c0] hover:text-white hover:!bg-zinc-700"
+                  >
                     Cancel
                   </Button>
                   <Button className="rounded-md shadow-none bg-yellow-700 text-black hover:text-white hover:!bg-zinc-700">
@@ -161,6 +170,26 @@ export default function Accounts() {
             </div>
           </div>
         </div>
+        <Modal
+          header="Discard changes?"
+          open={isConfirmModalOpen}
+          setOpen={setIsConfirmModalOpen}
+          footer={
+            <div className="self-end">
+              <Button className="rounded-md mr-2 bg-gray-50 shadow-none text-[#717284] border border-[#c0c0c0] hover:!text-black hover:!bg-yellow-700">
+                No
+              </Button>
+              <Button className="rounded-md shadow-none bg-zinc-700 text-white hover:!text-black hover:!bg-yellow-700">
+                Yes
+              </Button>
+            </div>
+          }
+        >
+          <p className="px-4 font-sm">
+            You haven’t saved your changes. Are you sure you want to discard
+            your changes?
+          </p>
+        </Modal>
       </>
     </HomeLayout>
   );

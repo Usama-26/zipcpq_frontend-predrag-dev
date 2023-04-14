@@ -45,7 +45,7 @@ export default function Modal({
           </Transition.Child>
 
           <div className="fixed inset-0 z-10 overflow-y-auto">
-            <div className="flex min-h-full  justify-center p-2 sm:p-4 text-center items-center sm:p-0">
+            <div className="flex min-h-full  justify-center p-2 sm:p-4 text-center items-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -56,7 +56,7 @@ export default function Modal({
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
                 <Dialog.Panel
-                  className="relative transform overflow-hidden
+                  className="relative w-96 transform overflow-hidden
                   rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 "
                 >
                   <div className="overflow-auto">
