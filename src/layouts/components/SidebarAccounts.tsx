@@ -37,11 +37,10 @@ const SidebarAccounts = ({breadcrumb}: ISidebarProps) => {
         <div>
           <div
             className={`flex justify-between items-center pr-1 rounded-md hover:bg-yellow-700 hover:text-black ${
-              pathname === '/accounts/' ||
-              (pathname === '/accounts/general' && 'bg-yellow-700 text-black')
+              pathname === '/accounts' && 'bg-yellow-700 text-black'
             }`}
           >
-            <Link href={'/accounts/general'} className={'w-full p-2'}>
+            <Link href={'/accounts'} className={'w-full p-2'}>
               <span>Account Details</span>
             </Link>
 

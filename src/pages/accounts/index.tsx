@@ -37,7 +37,7 @@ export default function Accounts() {
             </h1>
           </div>
           <div className="flex gap-8 rounded-md border text-black border-[#c0c0c0] p-10  h-[550px] overflow-auto">
-            <div className="2xl:basis-1/5 basis-2/5 self-start">
+            <div className=" basis-2/5 self-start">
               <h2 className="text-xl font-bold">Account Details</h2>
               <p className="text-sm">
                 Change your name, email, mobile number and more.
