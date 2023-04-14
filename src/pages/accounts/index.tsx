@@ -27,7 +27,7 @@ export default function Accounts() {
     <HomeLayout>
       <>
         <SidebarAccounts />
-        <div className="h-[700px]">
+        <div className="h-[700px] basis-full">
           <div className="mb-7">
             <h1>
               <span className="font-bold text-xl text-zinc-700 border-r border-r-zinc-700 pr-2">
